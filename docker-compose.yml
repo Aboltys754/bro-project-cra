@@ -60,7 +60,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 110M
+          memory: 100M
   db_mauth:
     image: "postgres"
     volumes:
