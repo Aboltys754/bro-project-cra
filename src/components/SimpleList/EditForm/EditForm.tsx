@@ -51,7 +51,7 @@ function _onSubmit(
   event.preventDefault()
   setDisabled(true)
 
-  fetchWrapper(() => fetch(`${serviceHost("bridge")}${api}/${addRow ? '' : id}`, {
+  fetchWrapper(() => fetch(`${serviceHost(serviceName)}${api}/${addRow ? '' : id}`, {
     method: addRow ? 'POST' : 'PATCH',
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`

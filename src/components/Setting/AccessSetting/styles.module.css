@@ -6,11 +6,7 @@
 }
 
 .root>h1,
+.root>h3,
 p {
   color: white;
-}
-
-.div_root {
-  display: flex;
-  flex-direction: column;
 }

@@ -1,0 +1,9 @@
+.root {
+  margin: 20px;
+}
+
+.root>h1,
+.root>h3,
+p {
+  color: white;
+}

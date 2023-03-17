@@ -3,7 +3,6 @@ import serviceHost from "../../../libs/service.host"
 import fetchWrapper from "../../../libs/fetch.wrapper"
 import { responseNotIsArray } from "../../../middleware/response.validator"
 import EditButton from "../EditButton/EditButton";
-import styles from "./styles.module.css"
 
 type Props = {
   about: IAbout | undefined
@@ -14,8 +13,7 @@ type Props = {
 
 export default function EditForm({ about, setAbout, editMode, setEditMode }: Props) {
   return <form
-    onSubmit={(event) => { _onSubmit(event, setEditMode, about, setAbout) }}
-    className={styles.root}>
+    onSubmit={(event) => { _onSubmit(event, setEditMode, about, setAbout) }}>
 
     <EditButton editMode={editMode} />
 

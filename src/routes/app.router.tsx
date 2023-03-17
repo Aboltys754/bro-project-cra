@@ -8,7 +8,7 @@ import catalogRouter from './catalog.router'
 import authRouter from './auth.router'
 import aboutCompanyRouter from './about.router'
 import userRouter from './user.router'
-import settingAccesRouter from "./settingAcces";
+import settingRouter from './setting.router'
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
   authRouter,
   aboutCompanyRouter,
   userRouter,
-  settingAccesRouter
+  settingRouter
 ])
 
 export default <RouterProvider router={router} />
