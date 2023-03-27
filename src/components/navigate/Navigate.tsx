@@ -50,6 +50,12 @@ export default function Navigate() {
             <Link to="/about" className="nav-link">О компании</Link>
           </li>
 
+          {session.getMe() ? 
+            <li className="nav-item">
+              <Link to="/createObject" className="nav-link active">Создать Объекты</Link>
+            </li>
+          : <></>}
+
 
           {session.getMe() ? <li className="nav-item">
             <Link to="/user" className="nav-link">Кабинет</Link>
