@@ -1,0 +1,8 @@
+.root {
+    /* background-color: #1a1a1a; */
+    padding: 20px 30px;
+  }
+  
+  .root>h1 {
+    color: white;
+  }

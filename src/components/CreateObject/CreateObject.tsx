@@ -1,14 +1,16 @@
 import Navigate from "../navigate/Navigate"
 import { Outlet } from "react-router-dom"
+import styles from "./styles.module.css"
 
-export default function CreateObject() {
+
+export default function CreateObject() {    
     return (
         <>
             <Navigate />
-            <div >
-            <h1>Каталог</h1>
-            <hr />
-            <Outlet />
+            <div className={styles.root}>
+                <h1>Создание объекта</h1>
+                <hr />
+                <Outlet />
             </div>
         </>
     )
