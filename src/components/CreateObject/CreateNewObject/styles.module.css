@@ -1,0 +1,8 @@
+.root span {
+    color: white;
+}
+
+.dropLi {
+    display: flex;
+    list-style-type: none;
+}

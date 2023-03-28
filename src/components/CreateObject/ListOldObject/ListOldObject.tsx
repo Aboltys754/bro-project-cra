@@ -5,16 +5,16 @@ import deepFinder from "../../../libs/deep.finder";
 
 export default function ListOldObject() {
     
-    tokenManager.subscribe("user")
+    tokenManager.subscribe("ListOldObject")
     const listOldObjects: Array<string> = ["Приказ на увольнение Петрова", 
                                            "Прикз на прием Сидорова в штат", 
                                            "Приказ на отпуск Иванова"];
                                            
     const arr = tokenManager.getMe()?.roles;
-    console.log(tokenManager.getMe())
+    // console.log(tokenManager.getMe()?.roles)
     return (
         <div>
-            <p>{tokenManager.getMe()?.roles[0].title}</p>
+            {tokenManager.getMe()?.roles === undefined ? <></> : <p>{tokenManager.getMe()?.roles[0]?.title}</p>}
             <Link to="/createObject/new/" className="btn btn-outline-light mt-4 ms-4 mb-4" 
                 hidden={!deepFinder(arr, "Создать")}>Новый Объект</Link>
             <ul>
