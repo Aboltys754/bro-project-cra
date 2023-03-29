@@ -24,21 +24,23 @@ export default function CreateNewObject() {
         <div className={styles.root}>
             <p>{tokenManager.getMe()?.roles[0].title}</p>
             <form onSubmit={(event) => console.log(1)}>
-                <Link  to="/createObject/OldList" className="btn btn-outline-light ms-4 mb-4" onClick={() => console.log("button back")}>Отмена</Link>
+                <Link  to="/createObject/OldList" className="btn btn-outline-light ms-4 mb-4" >Отмена</Link>
                 <div className={styles.dropLi}>
                     <li className="nav-item dropdown">
+                        <p>{hiddenTasks === "" ? "отдел не выбран" : hiddenTasks}</p>
                         <span className="nav-link dropdown-toggle" onClick={(event) => event.currentTarget.nextElementSibling?.classList.toggle("show")}>Отдел</span>
                         <div className="dropdown-menu" onClick={(event) => event.currentTarget.classList.toggle("show")}>
                             {directings?.directings.map((value, index) => 
                                 <p key={value?.id} 
                                 className="dropdown-item"
-                                onClick={() => stateHiddenAndTasks(value.title, value.tasks, setHiddenTasks, setTasks)}>{value?.title}
+                                onClick={() => stateHiddenAndTasks(value.title, value.tasks, setHiddenTasks, setTasks, setSelectedTask)}>{value?.title}
                                 </p>)}
                         </div>
+                        
                     </li>
-                    <NewDropMenu hiddenTasks={hiddenTasks} tasks={tasks} setSelectedTask={setSelectedTask}/>                    
+                    <NewDropMenu hiddenTasks={hiddenTasks} tasks={tasks} selectedTask={selectedTask} setSelectedTask={setSelectedTask}/>                    
                 </div>                
-                <NewFormObject />              
+                <NewFormObject selectedTask={selectedTask}/>              
             </form>      
         </div>
     )
@@ -48,10 +50,12 @@ function stateHiddenAndTasks(
     title: string, 
     tasks: Array< ITasks>, 
     setHiddenTasks: React.Dispatch<React.SetStateAction<string>>, 
-    setTasks: React.Dispatch<React.SetStateAction<ITasks[]>>) {
+    setTasks: React.Dispatch<React.SetStateAction<ITasks[]>>,
+    setSelectedTask: React.Dispatch<React.SetStateAction<string>>) {
 
     setHiddenTasks(title);
     setTasks(tasks);
+    setSelectedTask("");
 }
 
 // function clickDropMenuDispleyNone(event: React.MouseEvent<HTMLSpanElement, MouseEvent>) {

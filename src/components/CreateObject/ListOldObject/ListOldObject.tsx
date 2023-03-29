@@ -11,7 +11,6 @@ export default function ListOldObject() {
                                            "Приказ на отпуск Иванова"];
                                            
     const arr = tokenManager.getMe()?.roles;
-    // console.log(tokenManager.getMe()?.roles)
     return (
         <div>
             {tokenManager.getMe()?.roles === undefined ? <></> : <p>{tokenManager.getMe()?.roles[0]?.title}</p>}
