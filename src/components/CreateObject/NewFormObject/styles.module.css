@@ -1,0 +1,15 @@
+.root {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.textareaone {
+  width: 800px;
+  margin: 10px 0 20px 0;
+}
+
+.textareatwo {
+  max-width: 800px;
+  height: 300px;
+}
