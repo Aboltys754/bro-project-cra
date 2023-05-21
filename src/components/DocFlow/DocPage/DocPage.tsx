@@ -33,9 +33,7 @@ export default function DocPage() {
   const navigate = useNavigate();
   const [doc, setDoc] = useState(useLoaderData() as IDoc);
   const [showForm, setShowForm] = useState(false);
-  const path = useLocation().state;
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
-  console.log(doc)
 
   if (showForm) {
     const typeDoc: DocType = {
@@ -97,8 +95,7 @@ export default function DocPage() {
       dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
     ></p>
 
-    {path === "/docflow/listMeTasks" 
-    ? <div className={styles.buttons}>
+    <div className={styles.buttons}>
     {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ?
           <div
             className={classNames(styles.button)}
@@ -122,17 +119,14 @@ export default function DocPage() {
             </div>            
       : <></>}
   </div>
-  : <></>
-  }
 
-{path === "/docflow/listOtherTasks" 
-    ? <div className={styles.buttons}>
+<div className={styles.buttons}>
     {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ?
           <div
             className={classNames(styles.button)}
             onClick={() => {
               _acceptDoc(doc);
-              // navigate('/docflow');
+              navigate('/docflow');
             }}>
             <IconEdit height="70px" width="70px" className={styles.svgButton}/>
             <div>
@@ -146,15 +140,13 @@ export default function DocPage() {
             <div className={classNames(styles.button)}
             onClick={() => {
               _recipientDoc(doc);
-              // navigate('/docflow');
+              navigate('/docflow');
             }}>
               <IconCreate height="50px" width="50px" className={styles.svgButton}/>
               <div>Ознакомлен</div>                
             </div>            
       : <></>}
   </div>
-  : <></>
-  }
     
   </div>
 }
@@ -189,65 +181,105 @@ function _delDoc(id: string) {
 }
 
 function _acceptDoc (doc: IDoc) {
-  const tempDoc = doc
   doc.acceptor.map((acceptor, index) => {
     if(session.getMe()?.email === acceptor.email) {
-      tempDoc.acceptor[index].accept = true
+      doc.recipient[index].accept = true
     }
   })
-  const foo = JSON.stringify(tempDoc)
+
+  const fd = new FormData();
+
+  Object.entries(doc).map(([key, value]) => {
+    if (typeof value === "object") {
+      switch(key) {
+        case "directing":
+          fd.append(`directingId`, `${value.id}`);
+          break;
+        case "task":
+          fd.append(`taskId`, `${value.id}`);
+          break;
+        case "author":
+          fd.append(`author`, `${value.uid}`);
+          break;
+        case "acceptor":
+          value.map((e: propsAcceptor) => {
+            if (e.email === session.getMe()?.email) {
+              fd.append(`acceptor[${e.uid}]`, 'true')
+            } else {            
+              if (e.accept === false) {
+                fd.append(`acceptor[${e.uid}]`, '')                
+              } else {fd.append(`acceptor[${e.uid}]`, 'true')}
+            }});
+          break;   
+        case "recipient":
+          value.map((e: propsAcceptor) => {
+            if (e.accept === false) {
+              fd.append(`recipient[${e.uid}]`, '')
+            } else {fd.append(`recipient[${e.uid}]`, 'true')}});
+          break;               
+      }     
+    } else {
+      fd.append(`${key}`, `${value}`)
+    }
+  })
 
   fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/${doc.id}`, {
     method: 'PATCH',
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`
     },
-    body: foo
+    body: fd
   })).catch(error => console.log(error.message))
 }
 
 function _recipientDoc (doc: IDoc) {
-  const tempDoc = doc
   doc.recipient.map((recipient, index) => {
     if(session.getMe()?.email === recipient.email) {
-      tempDoc.recipient[index].accept = true
+      doc.recipient[index].accept = true
     }
   })
 
   const fd = new FormData();
 
-  // Object.entries(tempDoc).map(([key, value]) => console.log(`${key}: ${typeof value}`) )
-  Object.entries(tempDoc).map(([key, value]) => {
+  Object.entries(doc).map(([key, value]) => {
     if (typeof value === "object") {
-      if (key === "directing") {
-        fd.append(`directingId`, `${value.id}`)
-      }
-      if (key === "task") {
-        fd.append(`taskId`, `${value.id}`)
-      }
-      if (key === "author") {
-        fd.append(`author`, `${value.uid}`)
-      }
-      if (key === "acceptor") {
-        value.map((e: propsAcceptor) => {
-          if (e.accept === false) {
-            fd.append(`acceptor[${e.uid}]`, '')
-          } else {fd.append(`acceptor[${e.uid}]`, 'true')}          
-        })
-      }
-      
+      switch(key) {
+        case "directing":
+          fd.append(`directingId`, `${value.id}`);
+          break;
+        case "task":
+          fd.append(`taskId`, `${value.id}`);
+          break;
+        case "author":
+          fd.append(`author`, `${value.uid}`);
+          break;
+        case "acceptor":
+          value.map((e: propsAcceptor) => {
+            if (e.accept === false) {
+              fd.append(`acceptor[${e.uid}]`, '')
+            } else {fd.append(`acceptor[${e.uid}]`, 'true')}});
+          break;
+        case "recipient":
+          value.map((e: propsAcceptor) => {
+            if (e.email === session.getMe()?.email) {
+              fd.append(`recipient[${e.uid}]`, 'true')
+            } else {            
+              if (e.accept === false) {
+                fd.append(`recipient[${e.uid}]`, '')                
+              } else {fd.append(`recipient[${e.uid}]`, 'true')}
+            }});
+          break;          
+      }     
     } else {
-      console.log(2)
       fd.append(`${key}`, `${value}`)
     }
   })
 
-
-  // fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/${doc.id}`, {
-  //   method: 'PATCH',
-  //   headers: {
-  //     'Authorization': `Bearer ${tokenManager.getAccess()}`
-  //   },
-  //   body: fd
-  // })).catch(error => console.log(error.message))
+  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/${doc.id}`, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${tokenManager.getAccess()}`
+    },
+    body: fd
+  })).catch(error => console.log(error.message))
 }
