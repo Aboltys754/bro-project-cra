@@ -1,11 +1,13 @@
 :root[data-theme="light"] {
   --color: #1a1a1a;
   --background-color: #ffffff;
+  --color-link: #ffffff88;
 }
 
 :root[data-theme="dark"] {
   --color: #ffffff;
   --background-color: #1a1a1a;
+  --color-link:#ffffff88;
 }
 
 body {

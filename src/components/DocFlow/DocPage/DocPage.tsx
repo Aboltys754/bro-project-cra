@@ -12,10 +12,12 @@ import styles from "./styles.module.css"
 import classNames from "classnames";
 import BackArrow from "../BackArrow/BackArrow";
 import { Converter } from "md-conv";
-import {ReactComponent as IconCreate} from "./image/create.svg"
-import {ReactComponent as IconEdit} from "./image/edit.svg"
-import {ReactComponent as IconYes} from "./image/yes.svg"
-import {ReactComponent as IconNo} from "./image/no.svg"
+import {ReactComponent as IconEdit} from "../../../img/SVG/edit.svg"
+import {ReactComponent as IconEye} from "../../../img/SVG/eye.svg"
+import {ReactComponent as IconOk} from "../../../img/SVG/ok.svg"
+import {ReactComponent as IconDelete} from "../../../img/SVG/delete.svg"
+import {ReactComponent as IconYes} from "../../../img/SVG/yes.svg"
+import {ReactComponent as IconNo} from "../../../img/SVG/no.svg"
 
 
 type propsAcceptor = {
@@ -35,6 +37,9 @@ export default function DocPage() {
   const [showForm, setShowForm] = useState(false);
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
 
+  console.log(doc)
+
+
   if (showForm) {
     const typeDoc: DocType = {
       directing: doc.directing as IDirecting,
@@ -48,8 +53,31 @@ export default function DocPage() {
 
   return  <div className={styles.root}>
     <div className={styles.linkAndTitle}>
-      <BackArrow />
-      <small>{doc.directing?.title} / {doc.task?.title}</small>      
+      <div className={styles.backArrow}>
+        <BackArrow />
+        <small>{doc.directing?.title} / {doc.task?.title}</small> 
+      </div>           
+      <div className={styles.buttons}>
+        {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ?
+              <div
+                className={classNames(styles.buttonUp)}
+                onClick={() => setShowForm(true)}>
+                <IconEdit height="60px" width="60px" className={styles.svgButton}/>
+                Редактировать                            
+              </div>
+          : <></>}
+
+        {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ?
+                <div className={classNames(styles.buttonUp)}
+                onClick={() => {
+                  _delDoc(doc.id);
+                  navigate('/docflow');
+                }}>
+                  <IconDelete height="60px" width="55px" className={styles.svgButton}/>
+                Удалить               
+                </div>            
+          : <></>}
+      </div>          
     </div>
 
     <h3 className="mt-2">{doc.title}</h3>
@@ -93,70 +121,38 @@ export default function DocPage() {
     <p
       className="mt-2"
       dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
-    ></p>
-
+    ></p>    
     <div className={styles.buttons}>
-    {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ?
-          <div
-            className={classNames(styles.button)}
-            onClick={() => setShowForm(true)}>
-            <IconEdit height="70px" width="70px" className={styles.svgButton}/>
-            <div>
-              Редактировать документ
-            </div>
-                         
-          </div>
-      : <></>}
+        {_checkUpdateAction(doc.directing.id, doc.task.id, 'Согласовать') ?
+              <div
+                className={classNames(styles.buttonDown)}
+                onClick={() => {
+                  _acceptDoc(doc);
+                  navigate('/docflow');
+                }}>
+                <IconOk height="60px" width="60px" className={styles.svgButton}/>
+                Согласовать
+              </div>
+          : <></>}
 
-    {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ?
-            <div className={classNames(styles.button)}
-            onClick={() => {
-              _delDoc(doc.id);
-              navigate('/docflow');
-            }}>
-              <IconCreate height="50px" width="50px" className={styles.svgButton}/>
-              <div>Удалить</div>                
-            </div>            
-      : <></>}
-  </div>
-
-<div className={styles.buttons}>
-    {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ?
-          <div
-            className={classNames(styles.button)}
-            onClick={() => {
-              _acceptDoc(doc);
-              navigate('/docflow');
-            }}>
-            <IconEdit height="70px" width="70px" className={styles.svgButton}/>
-            <div>
-              Согласовать документ
-            </div>
-                         
-          </div>
-      : <></>}
-
-    {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ?
-            <div className={classNames(styles.button)}
-            onClick={() => {
-              _recipientDoc(doc);
-              navigate('/docflow');
-            }}>
-              <IconCreate height="50px" width="50px" className={styles.svgButton}/>
-              <div>Ознакомлен</div>                
-            </div>            
-      : <></>}
-  </div>
-    
+        {_checkUpdateAction(doc.directing.id, doc.task.id, 'Ознакомиться') ?
+                <div className={classNames(styles.buttonDown)}
+                onClick={() => {
+                  _recipientDoc(doc);
+                  navigate('/docflow');
+                }}>
+                  <IconEye height="60px" width="60px" className={styles.svgButton}/>
+                  Ознакомиться         
+                </div>            
+          : <></>}
+      </div> 
   </div>
 }
 
 
 function _checkUpdateAction(idDirecting: number, idTask: number, action: string) {
-  return session.getMe()?.roles[0]
-    .directings.find(e => e.id === idDirecting)
-    ?.tasks.find(e => e.id === idTask)
-    ?.actions.find(e => e.title === action)
+  return session.getMe()?.roles[0]?.directings.find(e => e.id === idDirecting)?.tasks.find(e => e.id === idTask)?.actions.find(e => e.title === action);
+        
 }
 
 function _delDoc(id: string) {
@@ -183,7 +179,7 @@ function _delDoc(id: string) {
 function _acceptDoc (doc: IDoc) {
   doc.acceptor.map((acceptor, index) => {
     if(session.getMe()?.email === acceptor.email) {
-      doc.recipient[index].accept = true
+      doc.acceptor[index].accept = true
     }
   })
 
