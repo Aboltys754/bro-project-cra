@@ -76,6 +76,7 @@
 
 .svgButton {
   fill: var(--color);
+  margin-right: 10px;
 }
 
 .buttonDown:hover svg {
@@ -90,6 +91,8 @@
 
 .root li {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .root span {

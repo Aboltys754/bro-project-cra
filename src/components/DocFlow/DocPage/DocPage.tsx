@@ -87,19 +87,23 @@ export default function DocPage() {
     <ul>
       {doc.acceptor.map(user => {
         return <li key={user.uid}>
-          <span>{user.name}</span>
-          {user.accept ? <IconYes height="15px" width="15px" className={styles.svgButton}/> : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
+          {user.accept 
+          ? <IconYes height="15px" width="15px" className={styles.svgButton}/> 
+          : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
+          <span>{user.name}</span>          
         </li>
       })}
     </ul>
 
-    {doc.recipient.length ? <p className="mt-4">Подписанты:</p> : <></>}
+    {doc.recipient.length ? <p className="mt-4">Ознокомители:</p> : <></>}
 
     <ul>
       {doc.recipient.map(user => {
         return <li key={user.uid}>
-          <span>{user.name}</span>
-          {user.accept ? <IconYes height="15px" width="15px" className={styles.svgButton}/> : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
+          {user.accept 
+          ? <IconYes height="15px" width="15px" className={styles.svgButton}/> 
+          : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
+          <span>{user.name}</span>          
         </li>
       })}
     </ul>
