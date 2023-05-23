@@ -51,82 +51,90 @@ export default function DocPage() {
     </div>
   }
 
-  return  <div className={styles.root}>
-    <div className={styles.linkAndTitle}>
-      <div className={styles.backArrow}>
-        <BackArrow />
-        <small>{doc.directing?.title} / {doc.task?.title}</small> 
-      </div>           
+  return  (
+    <div className={styles.root}>
+      <div className={styles.linkAndTitle}>
+        <div className={styles.backArrow}>
+          <BackArrow />
+          <small>{doc.directing?.title} / {doc.task?.title}</small> 
+        </div>       
+
+        <div className={styles.buttons}>
+          {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ?
+                <div
+                  className={classNames(styles.buttonUp)}
+                  onClick={() => setShowForm(true)}>
+                  <IconEdit height="60px" width="60px" className={styles.svgButton}/>
+                  Редактировать                            
+                </div>
+            : <></>}
+
+          {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ?
+                  <div className={classNames(styles.buttonUp)}
+                  onClick={() => {
+                    _delDoc(doc.id);
+                    navigate('/docflow');
+                  }}>
+                    <IconDelete height="60px" width="55px" className={styles.svgButton}/>
+                  Удалить               
+                  </div>            
+            : <></>}
+        </div>          
+      </div>
+
+      <h3 className="mt-2">{doc.title}</h3>
+
+      {doc.acceptor.length ? <p className="mt-4">Подписанты:</p> : <></>}
+
+      <ul>
+        {doc.acceptor.map(user => {
+          return <li key={user.uid}>
+            {user.accept 
+            ? <IconYes height="15px" width="15px" className={styles.svgButton}/> 
+            : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
+            <span>{user.name}</span>          
+          </li>
+        })}
+      </ul>
+
+      {doc.recipient.length ? <p className="mt-4">Ознокомители:</p> : <></>}
+
+      <ul>
+        {doc.recipient.map(user => {
+          return <li key={user.uid}>
+            {user.accept 
+            ? <IconYes height="15px" width="15px" className={styles.svgButton}/> 
+            : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
+            <span>{user.name}</span>          
+          </li>
+        })}
+      </ul>
+
+      {doc.files.length ? <p className="mt-4">Прикреплённые файлы:</p> : <></>}
+
+      <ul>
+        {doc.files.map(file => {
+          return <li key={file.fileName + doc.id}>
+            <a
+              className="text-muted"
+              href={`${serviceHost('informator')}/api/informator/docflow/scan/${file.fileName}`}
+              download={true}
+            >{file.originalName}</a>
+          </li>
+        })}
+      </ul>
+
+      <p
+        className={classNames(styles.textBoard, "mt-2")}
+        dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
+      ></p>
+
+      <div>
+        <p className={styles.footerFullName}>ФИО</p>
+        <p className={styles.footerSignature}>Подпись</p>
+      </div>
+
       <div className={styles.buttons}>
-        {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ?
-              <div
-                className={classNames(styles.buttonUp)}
-                onClick={() => setShowForm(true)}>
-                <IconEdit height="60px" width="60px" className={styles.svgButton}/>
-                Редактировать                            
-              </div>
-          : <></>}
-
-        {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ?
-                <div className={classNames(styles.buttonUp)}
-                onClick={() => {
-                  _delDoc(doc.id);
-                  navigate('/docflow');
-                }}>
-                  <IconDelete height="60px" width="55px" className={styles.svgButton}/>
-                Удалить               
-                </div>            
-          : <></>}
-      </div>          
-    </div>
-
-    <h3 className="mt-2">{doc.title}</h3>
-
-    {doc.acceptor.length ? <p className="mt-4">Подписанты:</p> : <></>}
-
-    <ul>
-      {doc.acceptor.map(user => {
-        return <li key={user.uid}>
-          {user.accept 
-          ? <IconYes height="15px" width="15px" className={styles.svgButton}/> 
-          : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
-          <span>{user.name}</span>          
-        </li>
-      })}
-    </ul>
-
-    {doc.recipient.length ? <p className="mt-4">Ознокомители:</p> : <></>}
-
-    <ul>
-      {doc.recipient.map(user => {
-        return <li key={user.uid}>
-          {user.accept 
-          ? <IconYes height="15px" width="15px" className={styles.svgButton}/> 
-          : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
-          <span>{user.name}</span>          
-        </li>
-      })}
-    </ul>
-
-    {doc.files.length ? <p className="mt-4">Прикреплённые файлы:</p> : <></>}
-
-    <ul>
-      {doc.files.map(file => {
-        return <li key={file.fileName + doc.id}>
-          <a
-            className="text-muted"
-            href={`${serviceHost('informator')}/api/informator/docflow/scan/${file.fileName}`}
-            download={true}
-          >{file.originalName}</a>
-        </li>
-      })}
-    </ul>
-
-    <p
-      className="mt-2"
-      dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
-    ></p>    
-    <div className={styles.buttons}>
         {_checkUpdateAction(doc.directing.id, doc.task.id, 'Согласовать') ?
               <div
                 className={classNames(styles.buttonDown)}
@@ -150,8 +158,8 @@ export default function DocPage() {
                 </div>            
           : <></>}
       </div> 
-  </div>
-}
+    </div>
+)}
 
 
 function _checkUpdateAction(idDirecting: number, idTask: number, action: string) {

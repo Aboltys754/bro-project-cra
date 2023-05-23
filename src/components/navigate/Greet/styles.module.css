@@ -1,3 +1,7 @@
+@media print {
+  .button {display: none !important} 
+  }
+
 .root {
   z-index: 100500;
   margin: 24px 20px 0 0;
