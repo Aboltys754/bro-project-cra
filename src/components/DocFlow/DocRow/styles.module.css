@@ -23,6 +23,16 @@
   cursor: pointer;
 }
 
+.root p {
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* max-height: 249px;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+}
+
 .condition {
   display: flex;
   flex-wrap: wrap;

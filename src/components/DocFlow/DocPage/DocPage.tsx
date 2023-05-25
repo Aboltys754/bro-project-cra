@@ -124,15 +124,23 @@ export default function DocPage() {
         })}
       </ul>
 
-      <p
-        className={classNames(styles.textBoard, "mt-2")}
+      <p className={classNames(styles.textBoard, "mt-2")}
         dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
       ></p>
-
-      <div>
-        <p className={styles.footerFullName}>ФИО</p>
-        <p className={styles.footerSignature}>Подпись</p>
-      </div>
+        
+      {/* <table>
+        <thead><tr><td>Верхний колонтитул</td></tr></thead>
+        <tfoot><td width="50%">{session.getMe()?.email}</td><td width="50%">Your footer goes here</td></tfoot>
+        <tbody>
+          <tr>
+            <td width="99%"><p
+            className={classNames(styles.textBoard, "mt-2")}
+            dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
+          ></p></td>
+            <td width="1%"><hr color="red" /></td>              
+          </tr>
+        </tbody>
+      </table> */}
 
       <div className={styles.buttons}>
         {_checkUpdateAction(doc.directing.id, doc.task.id, 'Согласовать') ?
@@ -158,6 +166,10 @@ export default function DocPage() {
                 </div>            
           : <></>}
       </div> 
+      <footer>
+          <div className={styles.userName}>{session.getMe()?.email}</div>
+          <div className={styles.signature}>Подпись <div className={styles.line}></div></div>
+      </footer>
     </div>
 )}
 
