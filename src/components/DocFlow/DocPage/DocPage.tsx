@@ -35,7 +35,6 @@ export default function DocPage() {
   const navigate = useNavigate();
   const [doc, setDoc] = useState(useLoaderData() as IDoc);
   const [showForm, setShowForm] = useState(false);
-  const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
 
   console.log(doc)
 
@@ -128,26 +127,12 @@ export default function DocPage() {
         dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
       ></p>
         
-      {/* <table>
-        <thead><tr><td>Верхний колонтитул</td></tr></thead>
-        <tfoot><td width="50%">{session.getMe()?.email}</td><td width="50%">Your footer goes here</td></tfoot>
-        <tbody>
-          <tr>
-            <td width="99%"><p
-            className={classNames(styles.textBoard, "mt-2")}
-            dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
-          ></p></td>
-            <td width="1%"><hr color="red" /></td>              
-          </tr>
-        </tbody>
-      </table> */}
-
       <div className={styles.buttons}>
         {_checkUpdateAction(doc.directing.id, doc.task.id, 'Согласовать') ?
               <div
                 className={classNames(styles.buttonDown)}
                 onClick={() => {
-                  _acceptDoc(doc);
+                  _acceptDoc(doc.acceptor, doc.id);
                   navigate('/docflow');
                 }}>
                 <IconOk height="60px" width="60px" className={styles.svgButton}/>
@@ -158,7 +143,7 @@ export default function DocPage() {
         {_checkUpdateAction(doc.directing.id, doc.task.id, 'Ознакомиться') ?
                 <div className={classNames(styles.buttonDown)}
                 onClick={() => {
-                  _recipientDoc(doc);
+                  _recipientDoc(doc.recipient, doc.id);
                   navigate('/docflow');
                 }}>
                   <IconEye height="60px" width="60px" className={styles.svgButton}/>
@@ -200,50 +185,59 @@ function _delDoc(id: string) {
   // .finally(() => navigate('/docflow'))
 }
 
-function _acceptDoc (doc: IDoc) {
-  doc.acceptor.map((acceptor, index) => {
+function _acceptDoc (acceptors: IDocSignatory[], docId: string) {
+  acceptors.map((acceptor, index) => {
     if(session.getMe()?.email === acceptor.email) {
-      doc.acceptor[index].accept = true
+      acceptors[index].accept = true
     }
   })
 
   const fd = new FormData();
+  acceptors.map((e: propsAcceptor) => {
+    if (e.email === session.getMe()?.email) {
+      fd.append(`acceptor[${e.uid}]`, 'true')
+    } else {            
+      if (e.accept === false) {
+        fd.append(`acceptor[${e.uid}]`, '')                
+      } else {fd.append(`acceptor[${e.uid}]`, 'true')}
+}})
 
-  Object.entries(doc).map(([key, value]) => {
-    if (typeof value === "object") {
-      switch(key) {
-        case "directing":
-          fd.append(`directingId`, `${value.id}`);
-          break;
-        case "task":
-          fd.append(`taskId`, `${value.id}`);
-          break;
-        case "author":
-          fd.append(`author`, `${value.uid}`);
-          break;
-        case "acceptor":
-          value.map((e: propsAcceptor) => {
-            if (e.email === session.getMe()?.email) {
-              fd.append(`acceptor[${e.uid}]`, 'true')
-            } else {            
-              if (e.accept === false) {
-                fd.append(`acceptor[${e.uid}]`, '')                
-              } else {fd.append(`acceptor[${e.uid}]`, 'true')}
-            }});
-          break;   
-        case "recipient":
-          value.map((e: propsAcceptor) => {
-            if (e.accept === false) {
-              fd.append(`recipient[${e.uid}]`, '')
-            } else {fd.append(`recipient[${e.uid}]`, 'true')}});
-          break;               
-      }     
-    } else {
-      fd.append(`${key}`, `${value}`)
-    }
-  })
 
-  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/${doc.id}`, {
+  // Object.entries(doc).map(([key, value]) => {
+  //   if (typeof value === "object") {
+  //     switch(key) {
+  //       case "directing":
+  //         fd.append(`directingId`, `${value.id}`);
+  //         break;
+  //       case "task":
+  //         fd.append(`taskId`, `${value.id}`);
+  //         break;
+  //       case "author":
+  //         fd.append(`author`, `${value.uid}`);
+  //         break;
+  //       case "acceptor":
+  //         value.map((e: propsAcceptor) => {
+  //           if (e.email === session.getMe()?.email) {
+  //             fd.append(`acceptor[${e.uid}]`, 'true')
+  //           } else {            
+  //             if (e.accept === false) {
+  //               fd.append(`acceptor[${e.uid}]`, '')                
+  //             } else {fd.append(`acceptor[${e.uid}]`, 'true')}
+  //           }});
+  //         break;   
+  //       case "recipient":
+  //         value.map((e: propsAcceptor) => {
+  //           if (e.accept === false) {
+  //             fd.append(`recipient[${e.uid}]`, '')
+  //           } else {fd.append(`recipient[${e.uid}]`, 'true')}});
+  //         break;               
+  //     }     
+  //   } else {
+  //     fd.append(`${key}`, `${value}`)
+  //   }
+  // })
+
+  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/accepting/${docId}`, {
     method: 'PATCH',
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`
@@ -252,50 +246,59 @@ function _acceptDoc (doc: IDoc) {
   })).catch(error => console.log(error.message))
 }
 
-function _recipientDoc (doc: IDoc) {
-  doc.recipient.map((recipient, index) => {
+function _recipientDoc (recipients: IDocSignatory[], docId: string) {
+  recipients.map((recipient, index) => {
     if(session.getMe()?.email === recipient.email) {
-      doc.recipient[index].accept = true
+      recipients[index].accept = true
     }
   })
 
   const fd = new FormData();
 
-  Object.entries(doc).map(([key, value]) => {
-    if (typeof value === "object") {
-      switch(key) {
-        case "directing":
-          fd.append(`directingId`, `${value.id}`);
-          break;
-        case "task":
-          fd.append(`taskId`, `${value.id}`);
-          break;
-        case "author":
-          fd.append(`author`, `${value.uid}`);
-          break;
-        case "acceptor":
-          value.map((e: propsAcceptor) => {
-            if (e.accept === false) {
-              fd.append(`acceptor[${e.uid}]`, '')
-            } else {fd.append(`acceptor[${e.uid}]`, 'true')}});
-          break;
-        case "recipient":
-          value.map((e: propsAcceptor) => {
-            if (e.email === session.getMe()?.email) {
-              fd.append(`recipient[${e.uid}]`, 'true')
-            } else {            
-              if (e.accept === false) {
-                fd.append(`recipient[${e.uid}]`, '')                
-              } else {fd.append(`recipient[${e.uid}]`, 'true')}
-            }});
-          break;          
-      }     
-    } else {
-      fd.append(`${key}`, `${value}`)
-    }
-  })
+  recipients.map((e: propsAcceptor) => {
+    if (e.email === session.getMe()?.email) {
+      fd.append(`recipient[${e.uid}]`, 'true')
+    } else {            
+      if (e.accept === false) {
+        fd.append(`recipient[${e.uid}]`, '')                
+      } else {fd.append(`recipient[${e.uid}]`, 'true')}
+}})
 
-  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/${doc.id}`, {
+  // Object.entries(doc).map(([key, value]) => {
+  //   if (typeof value === "object") {
+  //     switch(key) {
+  //       case "directing":
+  //         fd.append(`directingId`, `${value.id}`);
+  //         break;
+  //       case "task":
+  //         fd.append(`taskId`, `${value.id}`);
+  //         break;
+  //       case "author":
+  //         fd.append(`author`, `${value.uid}`);
+  //         break;
+  //       case "acceptor":
+  //         value.map((e: propsAcceptor) => {
+  //           if (e.accept === false) {
+  //             fd.append(`acceptor[${e.uid}]`, '')
+  //           } else {fd.append(`acceptor[${e.uid}]`, 'true')}});
+  //         break;
+  //       case "recipient":
+  //         value.map((e: propsAcceptor) => {
+  //           if (e.email === session.getMe()?.email) {
+  //             fd.append(`recipient[${e.uid}]`, 'true')
+  //           } else {            
+  //             if (e.accept === false) {
+  //               fd.append(`recipient[${e.uid}]`, '')                
+  //             } else {fd.append(`recipient[${e.uid}]`, 'true')}
+  //           }});
+  //         break;          
+  //     }     
+  //   } else {
+  //     fd.append(`${key}`, `${value}`)
+  //   }
+  // })
+
+  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/recipienting/${docId}`, {
     method: 'PATCH',
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`

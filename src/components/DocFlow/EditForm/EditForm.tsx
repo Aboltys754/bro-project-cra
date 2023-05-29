@@ -238,7 +238,7 @@ function _getErrorResponse(error: string): IErrorMessage {
 }
 
 const fechDataUser = async () => {
-  const response = await fetch(`${serviceHost("informator")}/api/informator/user/all`, {
+  const response = await fetch(`${serviceHost("informator")}/api/informator/user/search`, {
       headers: {
         'Authorization': `Bearer ${tokenManager.getAccess()}`
           }
