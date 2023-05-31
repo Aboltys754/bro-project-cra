@@ -8,7 +8,7 @@ interface IThemeContext {
     setTheme: Dispatch<SetStateAction<StyleTheme>>;
 }
 
-type ServiceName = "bridge" | "mauth" | "informator"
+type ServiceName = "bridge" | "mauth" | "informator" | "mnote"
 type PopupMode = "success" | "danger" | undefined
 type AuthFormMode = "signin" | "signup" | "forgot"
 /*

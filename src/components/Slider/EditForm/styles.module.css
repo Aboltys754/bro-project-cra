@@ -1,0 +1,14 @@
+.root h3,
+.root li,
+.root legend {
+  color: var(--color);
+}
+
+.root input[type=submit] {
+  margin-right: 10px;
+}
+
+.formUser {
+  display: flex;
+  flex-direction: row;
+}

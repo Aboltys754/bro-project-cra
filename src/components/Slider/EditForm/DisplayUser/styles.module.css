@@ -1,0 +1,18 @@
+.userList {
+    padding: 0;
+    width: 450px;
+}
+
+.userList li {
+    padding: 10px;
+    text-decoration: none !important;
+    list-style: none;
+}
+
+.userList span {
+    margin-left: 10px;
+}
+
+.userList span:hover {
+    color: var(--color) !important;
+}

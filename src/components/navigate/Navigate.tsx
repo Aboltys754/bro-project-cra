@@ -90,14 +90,15 @@ export default function Navigate() {
                       <hr />
                       <Link to="/setting/edit/access" className="dropdown-item">Права доступа</Link>
                       <Link to="/setting/edit/bundle/role" className="dropdown-item">Привязка ролей</Link>
+                      <Link to="/slider" className="dropdown-item">Управление слайдами</Link>
                     </div>
                   </li>
                   : <></>
                 }
 
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link to="/userPage" className="nav-link">test</Link>
-                </li>
+                </li> */}
 
                 {/* <li className="nav-item">
 

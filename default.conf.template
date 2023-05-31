@@ -18,4 +18,8 @@ server {
   location /api/informator/ {
     proxy_pass http://${HOST_INFORMATOR}:${PORT_INFORMATOR};
   }
+
+  location /api/mnote/ {
+    proxy_pass http://${HOST_mnote}:${PORT_mnote};
+  }
 }

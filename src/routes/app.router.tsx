@@ -12,7 +12,7 @@ import aboutCompanyRouter from "./about.router"
 import userRouter from "./user.router"
 import settingRouter from "./setting.router"
 import docFlowRouter from "./docflow.router"
-import userPageRoute from "./userPage.route"
+import sliderRouter from "./slider.router"
 
 const router = createBrowserRouter([
   {
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
   userRouter,
   settingRouter,
   docFlowRouter,
-  userPageRoute
+  sliderRouter,
 ])
 
 export default <RouterProvider router={router} />

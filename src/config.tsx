@@ -17,5 +17,11 @@ export default {
       host: prod ? '' : 'http://localhost',
       port: prod ? 0 : 3200,
     }
+  },
+  mnote: {
+    back: {
+      host: prod ? '' : 'http://localhost',
+      port: prod ? 0 : 3300,
+    }
   }
 }

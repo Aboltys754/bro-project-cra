@@ -46,7 +46,7 @@ export default function DocPage() {
     }
 
     return <div className={styles.root}>
-      <EditForm setShowForm={setShowForm} updDoc={setDoc} doc={doc} typeDoc={typeDoc} />
+      <EditForm />
     </div>
   }
 
@@ -202,41 +202,6 @@ function _acceptDoc (acceptors: IDocSignatory[], docId: string) {
       } else {fd.append(`acceptor[${e.uid}]`, 'true')}
 }})
 
-
-  // Object.entries(doc).map(([key, value]) => {
-  //   if (typeof value === "object") {
-  //     switch(key) {
-  //       case "directing":
-  //         fd.append(`directingId`, `${value.id}`);
-  //         break;
-  //       case "task":
-  //         fd.append(`taskId`, `${value.id}`);
-  //         break;
-  //       case "author":
-  //         fd.append(`author`, `${value.uid}`);
-  //         break;
-  //       case "acceptor":
-  //         value.map((e: propsAcceptor) => {
-  //           if (e.email === session.getMe()?.email) {
-  //             fd.append(`acceptor[${e.uid}]`, 'true')
-  //           } else {            
-  //             if (e.accept === false) {
-  //               fd.append(`acceptor[${e.uid}]`, '')                
-  //             } else {fd.append(`acceptor[${e.uid}]`, 'true')}
-  //           }});
-  //         break;   
-  //       case "recipient":
-  //         value.map((e: propsAcceptor) => {
-  //           if (e.accept === false) {
-  //             fd.append(`recipient[${e.uid}]`, '')
-  //           } else {fd.append(`recipient[${e.uid}]`, 'true')}});
-  //         break;               
-  //     }     
-  //   } else {
-  //     fd.append(`${key}`, `${value}`)
-  //   }
-  // })
-
   fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/accepting/${docId}`, {
     method: 'PATCH',
     headers: {
@@ -263,40 +228,6 @@ function _recipientDoc (recipients: IDocSignatory[], docId: string) {
         fd.append(`recipient[${e.uid}]`, '')                
       } else {fd.append(`recipient[${e.uid}]`, 'true')}
 }})
-
-  // Object.entries(doc).map(([key, value]) => {
-  //   if (typeof value === "object") {
-  //     switch(key) {
-  //       case "directing":
-  //         fd.append(`directingId`, `${value.id}`);
-  //         break;
-  //       case "task":
-  //         fd.append(`taskId`, `${value.id}`);
-  //         break;
-  //       case "author":
-  //         fd.append(`author`, `${value.uid}`);
-  //         break;
-  //       case "acceptor":
-  //         value.map((e: propsAcceptor) => {
-  //           if (e.accept === false) {
-  //             fd.append(`acceptor[${e.uid}]`, '')
-  //           } else {fd.append(`acceptor[${e.uid}]`, 'true')}});
-  //         break;
-  //       case "recipient":
-  //         value.map((e: propsAcceptor) => {
-  //           if (e.email === session.getMe()?.email) {
-  //             fd.append(`recipient[${e.uid}]`, 'true')
-  //           } else {            
-  //             if (e.accept === false) {
-  //               fd.append(`recipient[${e.uid}]`, '')                
-  //             } else {fd.append(`recipient[${e.uid}]`, 'true')}
-  //           }});
-  //         break;          
-  //     }     
-  //   } else {
-  //     fd.append(`${key}`, `${value}`)
-  //   }
-  // })
 
   fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/recipienting/${docId}`, {
     method: 'PATCH',

@@ -8,6 +8,8 @@ export default function serviceHost(name: ServiceName): string {
       return _makeURL(config.auth.back.host, config.auth.back.port);
     case "informator":
       return _makeURL(config.info.back.host, config.info.back.port);
+    case "mnote":
+      return _makeURL(config.mnote.back.host, config.mnote.back.port);
   }
 }
 
