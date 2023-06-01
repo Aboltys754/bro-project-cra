@@ -57,30 +57,35 @@ export default function EditForm() {
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
   const navigate = useNavigate(); 
 
-  return <form className={styles.root}
-    onSubmit={event => _onSubmit(event, setDisabled, setErrorResponse, fileList, currentUserList, currentUserListSubscribers, userList, navigate)}
-  >
-    <fieldset disabled={disabled} className="form-group">
+  return (
+      <div className={styles.root}>
+        <form 
+          onSubmit={event => _onSubmit(event, setDisabled, setErrorResponse, fileList, currentUserList, currentUserListSubscribers, userList, navigate)}
+        >
+          <fieldset disabled={disabled} className="form-group">
 
-      <TitleDoc errorMessage={errorMessage} /> 
+            <TitleDoc errorMessage={errorMessage} /> 
 
-      <FileNameList fileList={fileList} setFileList={setFileList} errorMessage={errorMessage} />
+            <FileNameList fileList={fileList} setFileList={setFileList} errorMessage={errorMessage} />
 
-      <FileInput errorMessage={errorMessage}
-        setFileList={(file: FileList) => setFileList([...fileList, file])} />
+            <FileInput errorMessage={errorMessage}
+              setFileList={(file: FileList) => setFileList([...fileList, file])} />
 
-      <TextPane/>
+            <TextPane/>
 
-      <>
-        <input type="submit" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} value="Записать" />
+            <>
+              <input type="submit" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} value="Записать" />
 
-        <span className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} onClick={() => console.log("отмена")}>Отмена</span>
-      </>
+              <span className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} onClick={() => console.log("отмена")}>Отмена</span>
+            </>
 
-      <input type="hidden" name="author" defaultValue={session.getMe()?.uid} />
-    </fieldset>
-  </form>
-}
+            </fieldset>
+        </form>
+      </div>
+  
+  
+  
+)}
 
 
 
@@ -96,24 +101,37 @@ function _onSubmit(
   
 ) {
   event.preventDefault();
-  setDisabled(true);
+  // setDisabled(true);
 
   const fd = new FormData(event.currentTarget)
+  fileList.map(f => fd.append('images', f[0]))
 
-  fileList.map(f => fd.append('scans', f[0]))
-  // перебирает список подписантов и записывет в fd
-  console.log(currentUserList)
-  if (currentUserList.length !== 0) {
-    currentUserList.map((e) => {
-      fd.append(`acceptor[${e[1]}]`, '')
-    })}
-    
-  // перебирает список ознокомителей и записывет в fd  
-  if (currentUserListSubscribers.length !== 0) {
-    currentUserListSubscribers.map((e) => {
-      fd.append(`recipient[${e[1]}]`, '')
+
+  fetchWrapper(() => fetch(`${serviceHost('mnote')}/api/mnote`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${tokenManager.getAccess()}`
+      },
+      body: fd
+    }))
+    .then(responseNotIsArray)
+    .then(async response => {
+      if (response.ok) {
+        const res = await response.json()
+        console.log(res)        
+        return;
+      }
+      else if (response.status === 400) {
+        const res = await response.json()
+        setErrorResponse(_getErrorResponse(res.error))
+        return;
+      }
+      throw new Error(`response status: ${response.status}`)
     })
-  }
+    .catch(error => console.log(error.message))
+    .finally(() => setDisabled(false));
+
+  
 
   // fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/${doc?.id || ''}`, {
   //   method: 'PATCH',

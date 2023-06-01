@@ -171,8 +171,8 @@ function _onSubmit(
   const fd = new FormData(event.currentTarget)
 
   fileList.map(f => fd.append('scans', f[0]))
+  
   // перебирает список подписантов и записывет в fd
-  console.log(currentUserList)
   if (currentUserList.length !== 0) {
     currentUserList.map((e) => {
       fd.append(`acceptor[${e[1]}]`, '')

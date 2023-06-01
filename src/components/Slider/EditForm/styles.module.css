@@ -1,3 +1,9 @@
+.root{
+  padding:20px 30px;
+  border: 1px solid var(--color);
+  max-width: 1000px;
+}
+
 .root h3,
 .root li,
 .root legend {

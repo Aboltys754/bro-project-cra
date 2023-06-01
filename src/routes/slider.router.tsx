@@ -22,7 +22,7 @@ export default {
 }
 
 function _getSlides() {
-    return fetch(`${serviceHost("informator")}/api/informator/docflow`, {
+    return fetch(`${serviceHost("informator")}/api/mnote/search/note`, {
       headers: {
         'Authorization': `Bearer ${tokenManager.getAccess()}`
       }

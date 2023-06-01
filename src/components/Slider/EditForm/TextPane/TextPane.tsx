@@ -10,14 +10,14 @@ type Props = {
 export default function TextPane() {
   return <div className={classNames("form-group mb-4", styles.root)}>
 
-        <p className="mt-4" onClick={_showTextarea}>
+        {/* <p className="mt-4" onClick={_showTextarea}>
           <AddDescIcon width="30" height="30" />
-          <small>Добавить пояснительную записку</small></p>
+          <small>Добавить пояснительную записку</small></p> */}
     
 
     <div>
       <label htmlFor="descTextarea" className="form-label mt-4">Пояснительная записка</label>
-      <textarea className="form-control" id="descTextarea" name="description"></textarea>
+      <textarea className="form-control" id="descTextarea" name="message"></textarea>
     </div>
   </div>
 }
