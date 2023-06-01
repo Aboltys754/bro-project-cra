@@ -90,7 +90,7 @@ export default function Navigate() {
                       <hr />
                       <Link to="/setting/edit/access" className="dropdown-item">Права доступа</Link>
                       <Link to="/setting/edit/bundle/role" className="dropdown-item">Привязка ролей</Link>
-                      <Link to="/slider" className="dropdown-item">Управление слайдами</Link>
+                      <Link to="/newsLine" className="dropdown-item">Управление слайдами</Link>
                     </div>
                   </li>
                   : <></>

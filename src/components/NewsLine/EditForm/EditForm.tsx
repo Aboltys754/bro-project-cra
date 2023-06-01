@@ -72,6 +72,12 @@ export default function EditForm() {
               setFileList={(file: FileList) => setFileList([...fileList, file])} />
 
             <TextPane/>
+            <div className={styles.isPablick}>              
+              <input type="checkbox" id="isPablick" value="true" name="isPublic"/>
+              <label htmlFor="isPablick">Опубликовать</label>
+            </div>
+            
+            
 
             <>
               <input type="submit" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} value="Записать" />

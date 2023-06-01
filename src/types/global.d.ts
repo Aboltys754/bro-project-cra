@@ -172,3 +172,15 @@ type PropsRoles = {
   id: string,
   title: string
 }
+
+// интерфейс настроек компоненты NewsLine
+
+interface INews {
+  createdAt: string
+  files: IDocFile[]
+  id: string
+  isPublic: boolean
+  message: string
+  title: string
+  updatedAt: string    
+}

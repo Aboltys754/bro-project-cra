@@ -1,4 +1,6 @@
 .root {
+  display: flex;
+  flex-direction: column;
   padding:20px 30px;
   border: 1px solid var(--color);
   max-width: 1000px;
@@ -23,7 +25,8 @@
   cursor: pointer;
 }
 
-.root p {
+.root>p {
+  margin-left: 10px;
   -webkit-line-clamp: 2;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -33,26 +36,37 @@
   text-overflow: ellipsis; */
 }
 
-.condition {
+.content {
   display: flex;
-  flex-wrap: wrap;
 }
 
-.userCondition {
+.svgImage {
+  height: 80px;
+  width: 80px;
+  /* fill: var(--background-color); */
+  /* stroke: var(--background-color); */
+}
+
+.svgImage path {
+  fill: var(--color);
+}
+
+.svgIcon {
   display: flex;
-  flex-direction: column;
-}
-
-.userCondition span {
-  margin-right: 100px;
-  color: var(--color);
-}
-
-.userCondition small {
-  color: var(--color);
+  align-items: center;
 }
 
 .svgButton {
   margin-right: 10px;
   fill: var(--color);
+}
+
+.sliceMessage a {
+  text-decoration: none;
+  margin-left: 5px;
+  color: var(--color-link);
+}
+
+.sliceMessage a :hover {
+  color: var(--color) !important;
 }

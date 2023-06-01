@@ -31,44 +31,44 @@ type propsAcceptor = {
 const converter = new Converter()
 
 export default function DocPage() {
-  session.subscribe('doc');
+  session.subscribe('NewsPage');
   const navigate = useNavigate();
-  const [doc, setDoc] = useState(useLoaderData() as IDoc);
+  const [doc, setDoc] = useState(useLoaderData() as INews);
   const [showForm, setShowForm] = useState(false);
 
   console.log(doc)
 
 
-  if (showForm) {
-    const typeDoc: DocType = {
-      directing: doc.directing as IDirecting,
-      task: doc.task as ITask
-    }
+  // if (showForm) {
+  //   const typeDoc: DocType = {
+  //     directing: doc.directing as IDirecting,
+  //     task: doc.task as ITask
+  //   }
 
-    return <div className={styles.root}>
-      <EditForm />
-    </div>
-  }
+  //   return <div className={styles.root}>
+  //     <EditForm />
+  //   </div>
+  // }
 
   return  (
     <div className={styles.root}>
       <div className={styles.linkAndTitle}>
         <div className={styles.backArrow}>
           <BackArrow />
-          <small>{doc.directing?.title} / {doc.task?.title}</small> 
+          <small>{doc.title}</small> 
         </div>       
 
         <div className={styles.buttons}>
-          {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ?
+          {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ? */}
                 <div
                   className={classNames(styles.buttonUp)}
                   onClick={() => setShowForm(true)}>
                   <IconEdit height="60px" width="60px" className={styles.svgButton}/>
                   Редактировать                            
                 </div>
-            : <></>}
+            {/* // : <></>} */}
 
-          {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ?
+          {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ? */}
                   <div className={classNames(styles.buttonUp)}
                   onClick={() => {
                     _delDoc(doc.id);
@@ -77,15 +77,15 @@ export default function DocPage() {
                     <IconDelete height="60px" width="55px" className={styles.svgButton}/>
                   Удалить               
                   </div>            
-            : <></>}
+            {/* : <></>} */}
         </div>          
       </div>
 
-      <h3 className="mt-2">{doc.title}</h3>
+      {/* <h3 className="mt-2">{doc.title}</h3> */}
 
-      {doc.acceptor.length ? <p className="mt-4">Подписанты:</p> : <></>}
+      {/* {doc.acceptor.length ? <p className="mt-4">Подписанты:</p> : <></>} */}
 
-      <ul>
+      {/* <ul>
         {doc.acceptor.map(user => {
           return <li key={user.uid}>
             {user.accept 
@@ -94,11 +94,11 @@ export default function DocPage() {
             <span>{user.name}</span>          
           </li>
         })}
-      </ul>
+      </ul> */}
 
-      {doc.recipient.length ? <p className="mt-4">Ознокомители:</p> : <></>}
+      {/* {doc.recipient.length ? <p className="mt-4">Ознокомители:</p> : <></>} */}
 
-      <ul>
+      {/* <ul>
         {doc.recipient.map(user => {
           return <li key={user.uid}>
             {user.accept 
@@ -107,11 +107,11 @@ export default function DocPage() {
             <span>{user.name}</span>          
           </li>
         })}
-      </ul>
+      </ul> */}
 
-      {doc.files.length ? <p className="mt-4">Прикреплённые файлы:</p> : <></>}
+      {/* {doc.files.length ? <p className="mt-4">Прикреплённые файлы:</p> : <></>} */}
 
-      <ul>
+      {/* <ul>
         {doc.files.map(file => {
           return <li key={file.fileName + doc.id}>
             <a
@@ -121,40 +121,17 @@ export default function DocPage() {
             >{file.originalName}</a>
           </li>
         })}
-      </ul>
+      </ul> */}
 
-      <p className={classNames(styles.textBoard, "mt-2")}
+      {/* <p className={classNames(styles.textBoard, "mt-2")}
         dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
-      ></p>
+      ></p> */}
         
-      <div className={styles.buttons}>
-        {_checkUpdateAction(doc.directing.id, doc.task.id, 'Согласовать') ?
-              <div
-                className={classNames(styles.buttonDown)}
-                onClick={() => {
-                  _acceptDoc(doc.acceptor, doc.id);
-                  navigate('/docflow');
-                }}>
-                <IconOk height="60px" width="60px" className={styles.svgButton}/>
-                Согласовать
-              </div>
-          : <></>}
-
-        {_checkUpdateAction(doc.directing.id, doc.task.id, 'Ознакомиться') ?
-                <div className={classNames(styles.buttonDown)}
-                onClick={() => {
-                  _recipientDoc(doc.recipient, doc.id);
-                  navigate('/docflow');
-                }}>
-                  <IconEye height="60px" width="60px" className={styles.svgButton}/>
-                  Ознакомиться         
-                </div>            
-          : <></>}
-      </div> 
-      <footer>
+      
+      {/* <footer>
           <div className={styles.userName}>{session.getMe()?.email}</div>
           <div className={styles.signature}>Подпись <div className={styles.line}></div></div>
-      </footer>
+      </footer> */}
     </div>
 )}
 
