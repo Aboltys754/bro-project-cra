@@ -60,7 +60,7 @@ export default function EditForm() {
   return (
       <div className={styles.root}>
         <form 
-          onSubmit={event => _onSubmit(event, setDisabled, setErrorResponse, fileList, currentUserList, currentUserListSubscribers, userList, navigate)}
+          onSubmit={event => _onSubmit(event, setDisabled, setErrorResponse, fileList, navigate)}
         >
           <fieldset disabled={disabled} className="form-group">
 
@@ -75,39 +75,27 @@ export default function EditForm() {
             <div className={styles.isPablick}>              
               <input type="checkbox" id="isPablick" value="true" name="isPublic"/>
               <label htmlFor="isPablick">Опубликовать</label>
-            </div>
-            
+            </div> 
             
 
             <>
               <input type="submit" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} value="Записать" />
 
-              <span className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} onClick={() => console.log("отмена")}>Отмена</span>
+              <span className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} onClick={() => navigate("/newsLine")}>Отмена</span>
             </>
-
             </fieldset>
         </form>
-      </div>
-  
-  
-  
+      </div>  
 )}
-
-
 
 function _onSubmit(
   event: React.FormEvent<HTMLFormElement>,
   setDisabled: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorResponse: React.Dispatch<React.SetStateAction<IErrorMessage | undefined>>,
   fileList: FileList[],
-  currentUserList: (string | undefined)[][],
-  currentUserListSubscribers: (string | undefined)[][],
-  userList: PropsUserList[],
-  navigate: NavigateFunction,
-  
+  navigate: NavigateFunction
 ) {
   event.preventDefault();
-  // setDisabled(true);
 
   const fd = new FormData(event.currentTarget)
   fileList.map(f => fd.append('images', f[0]))
@@ -135,41 +123,7 @@ function _onSubmit(
       throw new Error(`response status: ${response.status}`)
     })
     .catch(error => console.log(error.message))
-    .finally(() => setDisabled(false));
-
-  
-
-  // fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/${doc?.id || ''}`, {
-  //   method: 'PATCH',
-  //   headers: {
-  //     'Authorization': `Bearer ${tokenManager.getAccess()}`
-  //   },
-  //   body: fd
-  // }))
-  //   .then(responseNotIsArray)
-  //   .then(async response => {
-  //     if (response.ok) {
-  //       const res = await response.json()
-  //       setShowForm(false)
-
-  //       if (addDoc) {
-  //         addDoc(res)
-  //       }
-  //       if (updDoc) {
-  //         updDoc(res)
-  //         navigate("/docflow")
-  //       }
-  //       return;
-  //     }
-  //     else if (response.status === 400) {
-  //       const res = await response.json()
-  //       setErrorResponse(_getErrorResponse(res.error))
-  //       return;
-  //     }
-  //     throw new Error(`response status: ${response.status}`)
-  //   })
-  //   .catch(error => console.log(error.message))
-  //   .finally(() => setDisabled(false));
+    .finally(() => navigate("/newsLine")); 
 }
 
 function _getErrorResponse(error: string): IErrorMessage {

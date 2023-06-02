@@ -11,6 +11,7 @@ import SearchForm from "../SearchForm/SearchForm";
 import NextSearch from "../NextSearch/NextSearch";
 import TaskPage from "../TaskPage/TaskPage";
 import EditForm from "../EditForm/EditForm";
+import { Link } from "react-router-dom";
 
 
 export default function NewsList() {
@@ -20,21 +21,11 @@ export default function NewsList() {
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
 
   return <div className={styles.root} >
-    <h3>Слайды</h3>
+    <h3>Слайды</h3>  
 
+    <Link to={`/newsLine/editForm`} className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`, styles.button)}>Создать слайд</Link>
     
-    {showForm ?
-      <EditForm />
-      : 
-      <>
-
-        
-        <button type="button"
-                className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`, styles.button)}
-                onClick={() => setShowForm(true)}
-              >Создать слайд</button>
-
-        {docs?.map(news => <NewsRow key={news.id} {...news} />)}
+    {docs?.map(news => <NewsRow key={news.id} {...news} />)}
 
         {/* {docs.length > 0 ? <NextSearch
           setDocs={(newDocs: IDoc[]) => setDocs([...docs, ...newDocs])}
@@ -44,9 +35,6 @@ export default function NewsList() {
           setShowNextButton={setShowNextButton}
         />
           : <></>} */}
-
-      </>
-      }
   </div>
 }
 

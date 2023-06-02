@@ -9,6 +9,7 @@ import session from "../libs/token.manager";
 import NewsLine from "../components/NewsLine/NewsLine";
 import NewsList from "../components/NewsLine/NewsList/NewsList";
 import NewsPage from "../components/NewsLine/NewsPage/NewsPage"
+import EditForm from "../components/NewsLine/EditForm/EditForm";
 
 
 export default {
@@ -16,23 +17,36 @@ export default {
     element: <NewsLine />,
     children: [
         {
-            index: true,
-            element: <NewsList />,
-            loader: () => fetchWrapper(_getNews).catch(() => redirect('/auth'))
-          },
-          {
-            path: "/newsLine/:id",
-            element: <NewsPage />,
-            loader: ({ params }: LoaderFunctionArgs) => fetchWrapper(() => _getOneNews(params.id))
-              .then(responseNotIsArray)
-              .then(res => {
-                if (res.status === 404) {
-                  return redirect('/docflow')
-                }
-                return res;
-              })
-              .catch(() => redirect('/auth'))
-          }
+          index: true,
+          element: <NewsList />,
+          loader: () => fetchWrapper(_getNews).catch(() => redirect('/auth'))
+        },
+        {
+          path: "/newsLine/editForm",
+          element: <EditForm />,
+          loader: ({ params }: LoaderFunctionArgs) => fetchWrapper(() => _getOneNews(params.id))
+            .then(responseNotIsArray)
+            .then(res => {
+              if (res.status === 404) {
+                return redirect('/docflow')
+              }
+              return res;
+            })
+            .catch(() => redirect('/auth'))
+        },
+        {
+          path: "/newsLine/:id",
+          element: <NewsPage />,
+          loader: ({ params }: LoaderFunctionArgs) => fetchWrapper(() => _getOneNews(params.id))
+            .then(responseNotIsArray)
+            .then(res => {
+              if (res.status === 404) {
+                return redirect('/docflow')
+              }
+              return res;
+            })
+            .catch(() => redirect('/auth'))
+        }
     ]
 }
 

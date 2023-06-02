@@ -18,6 +18,7 @@ import {ReactComponent as IconOk} from "../../../img/SVG/ok.svg"
 import {ReactComponent as IconDelete} from "../../../img/SVG/delete.svg"
 import {ReactComponent as IconYes} from "../../../img/SVG/yes.svg"
 import {ReactComponent as IconNo} from "../../../img/SVG/no.svg"
+import { Link } from "react-router-dom";
 
 
 type propsAcceptor = {
@@ -33,10 +34,11 @@ const converter = new Converter()
 export default function DocPage() {
   session.subscribe('NewsPage');
   const navigate = useNavigate();
-  const [doc, setDoc] = useState(useLoaderData() as INews);
+  const [news, setNews] = useState(useLoaderData() as INews);
   const [showForm, setShowForm] = useState(false);
+  const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
 
-  console.log(doc)
+  console.log(news)
 
 
   // if (showForm) {
@@ -55,15 +57,17 @@ export default function DocPage() {
       <div className={styles.linkAndTitle}>
         <div className={styles.backArrow}>
           <BackArrow />
-          <small>{doc.title}</small> 
+          <small>Назад</small> 
         </div>       
 
         <div className={styles.buttons}>
           {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ? */}
+          <Link to={`/newsLine/editForm`}>Редактировать</Link>
                 <div
                   className={classNames(styles.buttonUp)}
                   onClick={() => setShowForm(true)}>
                   <IconEdit height="60px" width="60px" className={styles.svgButton}/>
+                  <Link to={`/newsLine/editForm`}></Link>
                   Редактировать                            
                 </div>
             {/* // : <></>} */}
@@ -71,8 +75,8 @@ export default function DocPage() {
           {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ? */}
                   <div className={classNames(styles.buttonUp)}
                   onClick={() => {
-                    _delDoc(doc.id);
-                    navigate('/docflow');
+                    _delNews(news.id);
+                    navigate('/newsLine');
                   }}>
                     <IconDelete height="60px" width="55px" className={styles.svgButton}/>
                   Удалить               
@@ -80,72 +84,34 @@ export default function DocPage() {
             {/* : <></>} */}
         </div>          
       </div>
+      
+      <h3 className="mt-2">{news.title}</h3>
 
-      {/* <h3 className="mt-2">{doc.title}</h3> */}
+      
 
-      {/* {doc.acceptor.length ? <p className="mt-4">Подписанты:</p> : <></>} */}
+      <p className={classNames(styles.textBoard, "mt-2")}
+        dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(news.message) }}
+      ></p>
 
-      {/* <ul>
-        {doc.acceptor.map(user => {
-          return <li key={user.uid}>
-            {user.accept 
-            ? <IconYes height="15px" width="15px" className={styles.svgButton}/> 
-            : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
-            <span>{user.name}</span>          
-          </li>
-        })}
-      </ul> */}
-
-      {/* {doc.recipient.length ? <p className="mt-4">Ознокомители:</p> : <></>} */}
-
-      {/* <ul>
-        {doc.recipient.map(user => {
-          return <li key={user.uid}>
-            {user.accept 
-            ? <IconYes height="15px" width="15px" className={styles.svgButton}/> 
-            : <IconNo height="15px" width="15px" className={styles.svgButton}/>}
-            <span>{user.name}</span>          
-          </li>
-        })}
-      </ul> */}
-
-      {/* {doc.files.length ? <p className="mt-4">Прикреплённые файлы:</p> : <></>} */}
-
-      {/* <ul>
-        {doc.files.map(file => {
-          return <li key={file.fileName + doc.id}>
+      {news.files.length ? <p className="mt-4">Прикреплённые файлы:</p> : <></>}
+      
+      <ul>
+        {news.files.map(file => {
+          return <li key={file.fileName + news.id}>
             <a
               className="text-muted"
-              href={`${serviceHost('informator')}/api/informator/docflow/scan/${file.fileName}`}
+              href={`${serviceHost('informator')}/api/mnote/scan/${file.fileName}`}
               download={true}
             >{file.originalName}</a>
           </li>
         })}
-      </ul> */}
-
-      {/* <p className={classNames(styles.textBoard, "mt-2")}
-        dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(doc.description) }}
-      ></p> */}
-        
-      
-      {/* <footer>
-          <div className={styles.userName}>{session.getMe()?.email}</div>
-          <div className={styles.signature}>Подпись <div className={styles.line}></div></div>
-      </footer> */}
+      </ul>
     </div>
 )}
 
-
-function _checkUpdateAction(idDirecting: number, idTask: number, action: string) {
-  return session.getMe()?.roles[0]?.directings.find(e => e.id === idDirecting)?.tasks.find(e => e.id === idTask)?.actions.find(e => e.title === action);
-        
-}
-
-function _delDoc(id: string) {
-  if (!confirm('Удалить этот документ?')) {
-    return;
-  }
-  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/${id}`, {
+function _delNews(id: string) {
+  
+  fetchWrapper(() => fetch(`${serviceHost('mnote')}/api/mnote/${id}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`
@@ -160,57 +126,4 @@ function _delDoc(id: string) {
     })
     .catch(error => console.log(error.message))
   // .finally(() => navigate('/docflow'))
-}
-
-function _acceptDoc (acceptors: IDocSignatory[], docId: string) {
-  acceptors.map((acceptor, index) => {
-    if(session.getMe()?.email === acceptor.email) {
-      acceptors[index].accept = true
-    }
-  })
-
-  const fd = new FormData();
-  acceptors.map((e: propsAcceptor) => {
-    if (e.email === session.getMe()?.email) {
-      fd.append(`acceptor[${e.uid}]`, 'true')
-    } else {            
-      if (e.accept === false) {
-        fd.append(`acceptor[${e.uid}]`, '')                
-      } else {fd.append(`acceptor[${e.uid}]`, 'true')}
-}})
-
-  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/accepting/${docId}`, {
-    method: 'PATCH',
-    headers: {
-      'Authorization': `Bearer ${tokenManager.getAccess()}`
-    },
-    body: fd
-  })).catch(error => console.log(error.message))
-}
-
-function _recipientDoc (recipients: IDocSignatory[], docId: string) {
-  recipients.map((recipient, index) => {
-    if(session.getMe()?.email === recipient.email) {
-      recipients[index].accept = true
-    }
-  })
-
-  const fd = new FormData();
-
-  recipients.map((e: propsAcceptor) => {
-    if (e.email === session.getMe()?.email) {
-      fd.append(`recipient[${e.uid}]`, 'true')
-    } else {            
-      if (e.accept === false) {
-        fd.append(`recipient[${e.uid}]`, '')                
-      } else {fd.append(`recipient[${e.uid}]`, 'true')}
-}})
-
-  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/recipienting/${docId}`, {
-    method: 'PATCH',
-    headers: {
-      'Authorization': `Bearer ${tokenManager.getAccess()}`
-    },
-    body: fd
-  })).catch(error => console.log(error.message))
 }

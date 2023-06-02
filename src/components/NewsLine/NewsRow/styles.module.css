@@ -41,10 +41,9 @@
 }
 
 .svgImage {
-  height: 80px;
-  width: 80px;
-  /* fill: var(--background-color); */
-  /* stroke: var(--background-color); */
+  width: 150px;
+  height: 110px;
+  margin-right: 10px;
 }
 
 .svgImage path {
@@ -69,4 +68,8 @@
 
 .sliceMessage a :hover {
   color: var(--color) !important;
+}
+
+.sliceMessage p {
+  max-width: 750px;
 }
