@@ -14,7 +14,6 @@ const docsLimit = 25;
 export default function ListTasks (){
     const docs = useLocation().state.ListTasks as IDoc[];
     const path = useLocation().state.Path;
-    console.log(path)
     return (
     <div className={styles.root}>
         <div className={styles.backArrow}>

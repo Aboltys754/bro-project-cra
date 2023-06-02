@@ -38,19 +38,8 @@ export default function DocPage() {
   const [showForm, setShowForm] = useState(false);
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
 
-  console.log(news)
-
-
-  // if (showForm) {
-  //   const typeDoc: DocType = {
-  //     directing: doc.directing as IDirecting,
-  //     task: doc.task as ITask
-  //   }
-
-  //   return <div className={styles.root}>
-  //     <EditForm />
-  //   </div>
-  // }
+  const stateFunction = "editing"
+  const newsId = news.id
 
   return  (
     <div className={styles.root}>
@@ -62,14 +51,16 @@ export default function DocPage() {
 
         <div className={styles.buttons}>
           {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ? */}
-          <Link to={`/newsLine/editForm`}>Редактировать</Link>
-                <div
-                  className={classNames(styles.buttonUp)}
-                  onClick={() => setShowForm(true)}>
+          <Link to={`/newsLine/editForm`} state={{stateFunction, newsId}} className={classNames(styles.buttonUp)}>
+              <IconEdit height="60px" width="60px" className={styles.svgButton}/>
+              Редактировать     
+          </Link>
+                {/* <div
+                  className={classNames(styles.buttonUp)}>
                   <IconEdit height="60px" width="60px" className={styles.svgButton}/>
-                  <Link to={`/newsLine/editForm`}></Link>
+                  <Link to={`/newsLine/editForm`} state={{stateFunction}}></Link>
                   Редактировать                            
-                </div>
+                </div> */}
             {/* // : <></>} */}
 
           {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ? */}

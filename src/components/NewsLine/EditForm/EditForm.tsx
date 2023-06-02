@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, NavigateFunction } from "react-router-dom"
+import { useNavigate, NavigateFunction, useLocation } from "react-router-dom"
 import styles from "./styles.module.css"
 import classNames from "classnames";
 
@@ -12,52 +12,22 @@ import { responseNotIsArray } from "../../../middleware/response.validator"
 import TextPane from "./TextPane/TextPane";
 import TitleDoc from "./TitleDoc/TitleDoc";
 import FileInput from "./FileInput/FileInput";
-import FileLinkList from "./FileLinkList/FileLinkList"
 import FileNameList from "./FileNameList/FileNameList"
-import HiddenInput from "./HiddenInput/HiddenInput";
-import InputUser from "./InputUser/InputUser";
-import DisplayUser from "./DisplayUser/DiasplayUser";
-// import SelectPane from "./SelectPane/SelectPane";
 
-
-type Props = {
-  setShowForm: React.Dispatch<React.SetStateAction<boolean>>
-  doc?: IDoc
-}
-
-type PropsRoles = {
-  directings: [],
-  id: string,
-  title: string
-}
-
-type PropsUserList = {
-  uid: string,
-  email: string,
-  photo: string,
-  name: string
-  roles: Array<PropsRoles>,
-}
 
 export default function EditForm() {
-  session.subscribe('DocFlow-EditList');
+  session.subscribe('NewsLine-EditList');
+  const [news, setNews] = useState();
   const [disabled, setDisabled] = useState(false)
   const [errorMessage, setErrorResponse] = useState<IErrorMessage>();
-  // список всех пользователей
-  const [userList, setUserList] = useState(Array<PropsUserList>)
   const [fileList, setFileList] = useState<FileList[]>([])
-  // список всех пользователей ознакомителей
-  const [userListFamiliarizer, setUserListFamiliarizer] = useState(Array<string>)
-  // список всех пользователей подписантов
-  const [userListSubscribers, setUserListSubscribers] = useState(Array<string>)
-  // список выбранных пользователей ознакомителей
-  const [currentUserList, setCurrentUserList] = useState(Array<Array<string | undefined>>)
-  // список выбранных пользователей подписантов
-  const [currentUserListSubscribers, setCurrentUserListSubscribers] = useState(Array<Array<string | undefined>>)
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const stateFunction = useLocation().state.stateFunction;
+  const newsId = useLocation().state.newsId;
 
-  return (
+  if (stateFunction === "creature") {
+    return (
       <div className={styles.root}>
         <form 
           onSubmit={event => _onSubmit(event, setDisabled, setErrorResponse, fileList, navigate)}
@@ -86,7 +56,48 @@ export default function EditForm() {
             </fieldset>
         </form>
       </div>  
-)}
+    )
+  } else {
+
+    useEffect(() => {
+      fechDataNewsr(newsId)
+      .then((res) => setNews(res))
+
+    }, [])
+    console.log(news)
+    return (
+    <div className={styles.root}>
+      <form 
+        onSubmit={event => _onSubmit(event, setDisabled, setErrorResponse, fileList, navigate)}
+      >
+        <fieldset disabled={disabled} className="form-group">
+
+          <TitleDoc errorMessage={errorMessage} /> 
+
+          <FileNameList fileList={fileList} setFileList={setFileList} errorMessage={errorMessage} />
+
+          <FileInput errorMessage={errorMessage}
+            setFileList={(file: FileList) => setFileList([...fileList, file])} />
+
+          <TextPane/>
+          <div className={styles.isPablick}>              
+            <input type="checkbox" id="isPablick" value="true" name="isPublic"/>
+            <label htmlFor="isPablick">Опубликовать</label>
+          </div> 
+          
+
+          <>
+            <input type="submit" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} value="Записать" />
+
+            <span className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} onClick={() => navigate("/newsLine")}>Отмена</span>
+          </>
+          </fieldset>
+      </form>
+    </div>  
+)
+  }
+
+  }
 
 function _onSubmit(
   event: React.FormEvent<HTMLFormElement>,
@@ -139,3 +150,16 @@ function _getErrorResponse(error: string): IErrorMessage {
     default: return { field: "", message: "" }
   }
 }
+
+const fechDataNewsr = async (newsId: string) => {
+  const response = await fetch(`${serviceHost("mnote")}/api/mnote/${newsId}`, {
+    headers: {
+      'Authorization': `Bearer ${tokenManager.getAccess()}`
+    }
+  })
+    if (!response.ok) {
+        throw new Error(`Что то пошло не так ${response.status}`)
+    } else {
+        return await response.json()
+    }
+  }

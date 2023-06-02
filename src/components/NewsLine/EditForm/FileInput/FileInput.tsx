@@ -34,6 +34,7 @@ function _change(
   setFileList: (file: FileList) => void
 ) {
   const files = event.currentTarget.files
+  console.log(files)
 
   if (files) {
     setFileList(files);

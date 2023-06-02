@@ -110,7 +110,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500M
+          memory: 300M
   db_mnote:
     image: "mongo"
     volumes:
@@ -122,7 +122,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500M
+          memory: 300M
   mnone_app:
     image: "geos74/mnote:0.0.1"
     ports:

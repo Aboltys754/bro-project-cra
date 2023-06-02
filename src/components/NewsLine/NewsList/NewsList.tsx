@@ -15,15 +15,16 @@ import { Link } from "react-router-dom";
 
 
 export default function NewsList() {
-  session.subscribe('SlidesList');
+  session.subscribe('SlidesList');  
   const [docs, setDocs] = useState(useLoaderData() as INews[])
   const [showForm, setShowForm] = useState(false);
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
+  const stateFunction = "creature"
 
   return <div className={styles.root} >
     <h3>Слайды</h3>  
 
-    <Link to={`/newsLine/editForm`} className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`, styles.button)}>Создать слайд</Link>
+    <Link to={`/newsLine/editForm`} state={{stateFunction}} className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`, styles.button)}>Создать слайд</Link>
     
     {docs?.map(news => <NewsRow key={news.id} {...news} />)}
 

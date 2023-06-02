@@ -24,15 +24,8 @@ export default {
         {
           path: "/newsLine/editForm",
           element: <EditForm />,
-          loader: ({ params }: LoaderFunctionArgs) => fetchWrapper(() => _getOneNews(params.id))
-            .then(responseNotIsArray)
-            .then(res => {
-              if (res.status === 404) {
-                return redirect('/docflow')
-              }
-              return res;
-            })
-            .catch(() => redirect('/auth'))
+          loader: () => session.start(),
+          
         },
         {
           path: "/newsLine/:id",
@@ -59,7 +52,6 @@ function _getNews() {
   }
 
 function _getOneNews(id?: string) {
-  console.log(id)
   return fetch(`${serviceHost("mnote")}/api/mnote/${id}`, {
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`
