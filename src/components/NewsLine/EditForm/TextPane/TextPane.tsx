@@ -7,7 +7,7 @@ type Props = {
   description: string | undefined
 }
 
-export default function TextPane() {
+export default function TextPane({ description }: Props) {
   return <div className={classNames("form-group mb-4", styles.root)}>
 
         {/* <p className="mt-4" onClick={_showTextarea}>
@@ -17,7 +17,7 @@ export default function TextPane() {
 
     <div>
       <label htmlFor="descTextarea" className="form-label mt-4">Пояснительная записка</label>
-      <textarea className="form-control" id="descTextarea" name="message"></textarea>
+      <textarea className="form-control" id="descTextarea" name="message" defaultValue={description}></textarea>
     </div>
   </div>
 }

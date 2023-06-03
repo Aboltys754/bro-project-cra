@@ -13,6 +13,7 @@ import TextPane from "./TextPane/TextPane";
 import TitleDoc from "./TitleDoc/TitleDoc";
 import FileInput from "./FileInput/FileInput";
 import FileNameList from "./FileNameList/FileNameList"
+import FileLinkList from "./FileLinkList/FileLinkList";
 
 
 export default function EditForm() {
@@ -23,10 +24,9 @@ export default function EditForm() {
   const [fileList, setFileList] = useState<FileList[]>([])
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
   const navigate = useNavigate();
-  const stateFunction = useLocation().state.stateFunction;
-  const newsId = useLocation().state.newsId;
+  const stateNews = useLocation().state.news as INews;
 
-  if (stateFunction === "creature") {
+  console.log(stateNews)
     return (
       <div className={styles.root}>
         <form 
@@ -34,16 +34,19 @@ export default function EditForm() {
         >
           <fieldset disabled={disabled} className="form-group">
 
-            <TitleDoc errorMessage={errorMessage} /> 
+            <TitleDoc errorMessage={errorMessage} title={stateNews?.title}/> 
+
+            <FileLinkList docId={stateNews?.id} files={stateNews?.files} />
 
             <FileNameList fileList={fileList} setFileList={setFileList} errorMessage={errorMessage} />
 
             <FileInput errorMessage={errorMessage}
               setFileList={(file: FileList) => setFileList([...fileList, file])} />
 
-            <TextPane/>
-            <div className={styles.isPablick}>              
-              <input type="checkbox" id="isPablick" value="true" name="isPublic"/>
+            <TextPane description={stateNews?.message}/>
+
+            <div className={styles.isPablick}>
+              <input type="checkbox" id="isPablick" value="true" name="isPublic" checked={stateNews?.isPublic}/>
               <label htmlFor="isPablick">Опубликовать</label>
             </div> 
             
@@ -56,48 +59,7 @@ export default function EditForm() {
             </fieldset>
         </form>
       </div>  
-    )
-  } else {
-
-    useEffect(() => {
-      fechDataNewsr(newsId)
-      .then((res) => setNews(res))
-
-    }, [])
-    console.log(news)
-    return (
-    <div className={styles.root}>
-      <form 
-        onSubmit={event => _onSubmit(event, setDisabled, setErrorResponse, fileList, navigate)}
-      >
-        <fieldset disabled={disabled} className="form-group">
-
-          <TitleDoc errorMessage={errorMessage} /> 
-
-          <FileNameList fileList={fileList} setFileList={setFileList} errorMessage={errorMessage} />
-
-          <FileInput errorMessage={errorMessage}
-            setFileList={(file: FileList) => setFileList([...fileList, file])} />
-
-          <TextPane/>
-          <div className={styles.isPablick}>              
-            <input type="checkbox" id="isPablick" value="true" name="isPublic"/>
-            <label htmlFor="isPablick">Опубликовать</label>
-          </div> 
-          
-
-          <>
-            <input type="submit" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} value="Записать" />
-
-            <span className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} onClick={() => navigate("/newsLine")}>Отмена</span>
-          </>
-          </fieldset>
-      </form>
-    </div>  
-)
-  }
-
-  }
+    )}
 
 function _onSubmit(
   event: React.FormEvent<HTMLFormElement>,

@@ -51,16 +51,12 @@ export default function DocPage() {
 
         <div className={styles.buttons}>
           {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ? */}
-          <Link to={`/newsLine/editForm`} state={{stateFunction, newsId}} className={classNames(styles.buttonUp)}>
+          <div className={styles.buttonUp}>
+            <Link to={`/newsLine/editForm`} state={{news}}>
               <IconEdit height="60px" width="60px" className={styles.svgButton}/>
-              Редактировать     
-          </Link>
-                {/* <div
-                  className={classNames(styles.buttonUp)}>
-                  <IconEdit height="60px" width="60px" className={styles.svgButton}/>
-                  <Link to={`/newsLine/editForm`} state={{stateFunction}}></Link>
-                  Редактировать                            
-                </div> */}
+              Редактировать
+            </Link>
+          </div>                
             {/* // : <></>} */}
 
           {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ? */}
@@ -78,6 +74,10 @@ export default function DocPage() {
       
       <h3 className="mt-2">{news.title}</h3>
 
+      <div className={styles.isOpen}>
+        {news.isPublic ? <IconYes height={20} width={20}/> : <IconNo height={20} width={20}/>}
+        <p>Опубликован</p>
+      </div>
       
 
       <p className={classNames(styles.textBoard, "mt-2")}
