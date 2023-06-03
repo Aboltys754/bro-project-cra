@@ -14,6 +14,7 @@ import TitleDoc from "./TitleDoc/TitleDoc";
 import FileInput from "./FileInput/FileInput";
 import FileNameList from "./FileNameList/FileNameList"
 import FileLinkList from "./FileLinkList/FileLinkList";
+import IsPublic from "./IsPublic/IsPublic";
 
 
 export default function EditForm() {
@@ -45,10 +46,12 @@ export default function EditForm() {
 
             <TextPane description={stateNews?.message}/>
 
+            <IsPublic isPublic={stateNews?.isPublic}/>
+{/* 
             <div className={styles.isPablick}>
               <input type="checkbox" id="isPablick" value="true" name="isPublic" checked={stateNews?.isPublic}/>
               <label htmlFor="isPablick">Опубликовать</label>
-            </div> 
+            </div>  */}
             
 
             <>

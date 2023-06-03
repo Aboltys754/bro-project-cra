@@ -55,6 +55,13 @@
   color: var(--color-link);
 }
 
+.buttonUp svg:hover {
+  transition: 0.5s;
+  color: var(--color-link);
+  fill: var(--color-link) !important;
+}
+
+
 .buttonUp a {
   display: flex;
   flex-direction: column;
