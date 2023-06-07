@@ -47,7 +47,7 @@ function _delFile(docId: string, fileName: string) {
   const fd = new FormData()
   fd.append('fileName', fileName);
 
-  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/file/${docId}`, {
+  fetchWrapper(() => fetch(`${serviceHost('mnote')}/api/mnote/file/${docId}`, {
     method: 'PATCH',
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`

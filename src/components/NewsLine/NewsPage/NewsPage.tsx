@@ -1,33 +1,21 @@
-import { useNavigate, useLoaderData, useLocation } from "react-router-dom";
+import { useNavigate, useLoaderData } from "react-router-dom";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
 import session from "../../../libs/token.manager"
 import tokenManager from "../../../libs/token.manager"
 import { responseNotIsArray } from "../../../middleware/response.validator";
 import fetchWrapper from "../../../libs/fetch.wrapper";
 import serviceHost from "../../../libs/service.host";
-import EditForm from "../EditForm/EditForm";
 import styles from "./styles.module.css"
 import classNames from "classnames";
 import BackArrow from "../BackArrow/BackArrow";
 import { Converter } from "md-conv";
 import {ReactComponent as IconEdit} from "../../../img/SVG/edit.svg"
-import {ReactComponent as IconEye} from "../../../img/SVG/eye.svg"
-import {ReactComponent as IconOk} from "../../../img/SVG/ok.svg"
 import {ReactComponent as IconDelete} from "../../../img/SVG/delete.svg"
 import {ReactComponent as IconYes} from "../../../img/SVG/yes.svg"
 import {ReactComponent as IconNo} from "../../../img/SVG/no.svg"
 import { Link } from "react-router-dom";
 
-
-type propsAcceptor = {
-  accept: string | boolean,
-  email: string,
-  fullName: string,
-  name: string,
-  uid: string,
-}
 
 const converter = new Converter()
 
@@ -35,11 +23,6 @@ export default function DocPage() {
   session.subscribe('NewsPage');
   const navigate = useNavigate();
   const [news, setNews] = useState(useLoaderData() as INews);
-  const [showForm, setShowForm] = useState(false);
-  const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
-
-  const stateFunction = "editing"
-  const newsId = news.id
 
   return  (
     <div className={styles.root}>

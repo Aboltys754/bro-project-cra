@@ -17,6 +17,7 @@ import FileNameList from "./FileNameList/FileNameList"
 import HiddenInput from "./HiddenInput/HiddenInput";
 import InputUser from "./InputUser/InputUser";
 import DisplayUser from "./DisplayUser/DiasplayUser";
+import Calendar from "../Calendar/Calendar";
 // import SelectPane from "./SelectPane/SelectPane";
 
 
@@ -107,6 +108,8 @@ export default function EditForm({ setShowForm, doc, addDoc, updDoc, typeDoc }: 
 
 
       <legend className="mt-3">{addDoc ? "Создание документа" : "Изменение документа"}</legend>
+
+      {/* <Calendar /> */}
 
       {/* <SelectPane 
     directingId={doc?.directing.id.toString()}

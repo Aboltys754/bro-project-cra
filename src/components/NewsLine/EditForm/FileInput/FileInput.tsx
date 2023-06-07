@@ -24,7 +24,7 @@ export default function FileInput({ errorMessage, setFileList }: Props) {
       <UploadIcon width="50" height="50" />
       <small>Добавить файл</small></p>
 
-    <input type="file" onChange={event => _change(event, setFileList)} hidden />
+    <input type="file"  accept="image/*" onChange={event => _change(event, setFileList)} hidden />
     {errorMessage?.field === "file" ? <ErrorMessage errorMessage={errorMessage.message} /> : <></>}
   </div>
 }
@@ -34,7 +34,6 @@ function _change(
   setFileList: (file: FileList) => void
 ) {
   const files = event.currentTarget.files
-  console.log(files)
 
   if (files) {
     setFileList(files);

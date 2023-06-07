@@ -1,0 +1,51 @@
+.root {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 255px;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.date {
+    margin: 2px;
+    padding: 2px;
+    border: 2px #000 solid;    
+    border-radius: 5px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dateNew {
+    background-color: #63aff7 !important;
+}
+
+.month {
+    background-color: #faf27d !important;
+}
+
+.date:hover {
+    border: 2px #fff solid;
+    background-color: #000 !important;
+    color: #ffffff;
+}
+
+.dateNew:hover {
+    border: 2px #fff solid;
+    background-color: #000 !important;
+    color: #ffffff;
+}
+
+.displayNone {
+    margin: 2px;
+    padding: 2px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    cursor: pointer;
+}

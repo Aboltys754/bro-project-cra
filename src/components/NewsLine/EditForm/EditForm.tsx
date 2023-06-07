@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, NavigateFunction, useLocation } from "react-router-dom"
 import styles from "./styles.module.css"
@@ -19,8 +19,6 @@ import IsPublic from "./IsPublic/IsPublic";
 
 export default function EditForm() {
   session.subscribe('NewsLine-EditList');
-  const [news, setNews] = useState();
-  const [disabled, setDisabled] = useState(false)
   const [errorMessage, setErrorResponse] = useState<IErrorMessage>();
   const [fileList, setFileList] = useState<FileList[]>([])
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
@@ -28,12 +26,13 @@ export default function EditForm() {
   const stateNews = useLocation().state.news as INews;
 
   console.log(stateNews)
+
     return (
       <div className={styles.root}>
         <form 
-          onSubmit={event => _onSubmit(event, setDisabled, setErrorResponse, fileList, navigate)}
+          onSubmit={event => _onSubmit(event, setErrorResponse, fileList, stateNews, navigate)}
         >
-          <fieldset disabled={disabled} className="form-group">
+          <fieldset className="form-group">
 
             <TitleDoc errorMessage={errorMessage} title={stateNews?.title}/> 
 
@@ -46,18 +45,16 @@ export default function EditForm() {
 
             <TextPane description={stateNews?.message}/>
 
-            <IsPublic isPublic={stateNews?.isPublic}/>
-{/* 
-            <div className={styles.isPablick}>
-              <input type="checkbox" id="isPablick" value="true" name="isPublic" checked={stateNews?.isPublic}/>
-              <label htmlFor="isPablick">Опубликовать</label>
-            </div>  */}
-            
+            <IsPublic isPublic={stateNews?.isPublic}/>            
 
             <>
-              <input type="submit" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} value="Записать" />
+              <input type="submit" 
+                className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} 
+                value="Записать" />
 
-              <span className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} onClick={() => navigate("/newsLine")}>Отмена</span>
+              <span 
+                className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} 
+                onClick={() => navigate("/newsLine")}>Отмена</span>
             </>
             </fieldset>
         </form>
@@ -66,9 +63,9 @@ export default function EditForm() {
 
 function _onSubmit(
   event: React.FormEvent<HTMLFormElement>,
-  setDisabled: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorResponse: React.Dispatch<React.SetStateAction<IErrorMessage | undefined>>,
   fileList: FileList[],
+  stateNews: INews,
   navigate: NavigateFunction
 ) {
   event.preventDefault();
@@ -76,9 +73,9 @@ function _onSubmit(
   const fd = new FormData(event.currentTarget)
   fileList.map(f => fd.append('images', f[0]))
 
-
-  fetchWrapper(() => fetch(`${serviceHost('mnote')}/api/mnote`, {
-      method: 'POST',
+  // если пользователь пришел не по нажатию кнопки редактировать, тогда stateNews будет undefined 
+  fetchWrapper(() => fetch(`${serviceHost('mnote')}${stateNews ? `/api/mnote/${stateNews?.id}` : `/api/mnote`}`, {
+      method: `${stateNews ? 'PATCH' : 'POST'}`,
       headers: {
         'Authorization': `Bearer ${tokenManager.getAccess()}`
       },
@@ -102,29 +99,18 @@ function _onSubmit(
     .finally(() => navigate("/newsLine")); 
 }
 
-function _getErrorResponse(error: string): IErrorMessage {
-  switch (error) {
-    case "invalid title":
-      return { field: "title", message: "Введите название документа" }
-    case "invalid directing id":
-      return { field: "directSelect", message: "Не выбрано направление" }
-    case "invalid task id":
-      return { field: "taskSelect", message: "Не выбран тип документа" }
-    case "bad mime type":
-      return { field: "fileUpload", message: "Не поддерживаемый тип файлов" }
-    default: return { field: "", message: "" }
-  }
-}
 
-const fechDataNewsr = async (newsId: string) => {
-  const response = await fetch(`${serviceHost("mnote")}/api/mnote/${newsId}`, {
-    headers: {
-      'Authorization': `Bearer ${tokenManager.getAccess()}`
-    }
-  })
-    if (!response.ok) {
-        throw new Error(`Что то пошло не так ${response.status}`)
-    } else {
-        return await response.json()
+
+  function _getErrorResponse(error: string): IErrorMessage {
+    switch (error) {
+      case "invalid title":
+        return { field: "title", message: "Введите название документа" }
+      case "invalid directing id":
+        return { field: "directSelect", message: "Не выбрано направление" }
+      case "invalid task id":
+        return { field: "taskSelect", message: "Не выбран тип документа" }
+      case "bad mime type":
+        return { field: "fileUpload", message: "Не поддерживаемый тип файлов" }
+      default: return { field: "", message: "" }
     }
   }
