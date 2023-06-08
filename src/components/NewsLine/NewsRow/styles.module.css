@@ -73,3 +73,17 @@
 .sliceMessage p {
   max-width: 750px;
 }
+
+.foto {
+  margin-right: 10px;
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.isPublic {  
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
