@@ -11,7 +11,6 @@ import {ReactComponent as Prohibitionsignal} from "../../../img/SVG/prohibitions
 const converter = new Converter()
 
 export default function DocRow(news: INews) {
-  console.log(news.files[0]?.fileName)
   return (
   <div className={classNames(styles.root, "mt-2")}>
     <h4 className="mt-2"><Link to={`/newsLine/${news.id}`} className="nav-link">{news.title}</Link></h4>

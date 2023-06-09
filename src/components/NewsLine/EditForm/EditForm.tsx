@@ -16,16 +16,19 @@ import FileNameList from "./FileNameList/FileNameList"
 import FileLinkList from "./FileLinkList/FileLinkList";
 import IsPublic from "./IsPublic/IsPublic";
 
+type fileListProps = {
+  fileList: FileList,
+  fileImage: string
+}
+
 
 export default function EditForm() {
   session.subscribe('NewsLine-EditList');
   const [errorMessage, setErrorResponse] = useState<IErrorMessage>();
-  const [fileList, setFileList] = useState<FileList[]>([])
+  const [fileList, setFileList] = useState<fileListProps[]>([])
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
   const navigate = useNavigate();
   const stateNews = useLocation().state.news as INews;
-
-  console.log(stateNews)
 
     return (
       <div className={styles.root}>
@@ -41,7 +44,7 @@ export default function EditForm() {
             <FileNameList fileList={fileList} setFileList={setFileList} errorMessage={errorMessage} />
 
             <FileInput errorMessage={errorMessage}
-              setFileList={(file: FileList) => setFileList([...fileList, file])} />
+              setFileList={(file: fileListProps) => setFileList([...fileList, file])} />
 
             <TextPane description={stateNews?.message}/>
 
@@ -64,14 +67,14 @@ export default function EditForm() {
 function _onSubmit(
   event: React.FormEvent<HTMLFormElement>,
   setErrorResponse: React.Dispatch<React.SetStateAction<IErrorMessage | undefined>>,
-  fileList: FileList[],
+  fileList: fileListProps[],
   stateNews: INews,
   navigate: NavigateFunction
 ) {
   event.preventDefault();
 
   const fd = new FormData(event.currentTarget)
-  fileList.map(f => fd.append('images', f[0]))
+  fileList.map(f => fd.append('images', f.fileList[0]))
 
   // если пользователь пришел не по нажатию кнопки редактировать, тогда stateNews будет undefined 
   fetchWrapper(() => fetch(`${serviceHost('mnote')}${stateNews ? `/api/mnote/${stateNews?.id}` : `/api/mnote`}`, {

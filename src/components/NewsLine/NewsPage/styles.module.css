@@ -96,3 +96,7 @@
 .textBoard {
   max-width: 900px;
 }
+
+.image {
+  max-width: 200px;
+}

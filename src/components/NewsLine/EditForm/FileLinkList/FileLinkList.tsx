@@ -12,6 +12,7 @@ type Props = {
 }
 
 export default function FileLinkList({ docId, files }: Props) {
+  console.log(files)
   if (!files || !files.length) {
     return <></>
   }
@@ -19,16 +20,21 @@ export default function FileLinkList({ docId, files }: Props) {
   return <div className={classNames("mt-4", styles.root)}>
     {files.length ? <><legend>Прикреплённые файлы:</legend><hr></hr></> : <></>}
 
+    <div>
+      <img src="" alt="" id="imageFileLinkList" className={styles.image} hidden/>
+    </div>
+
     <ul>
       {files.map((f, i) => (
         <li key={i}
+          onClick={() => _showImage(f)}
           onMouseEnter={_showOptionalButton}
           onMouseLeave={_showOptionalButton}
         >
           {f.originalName}
 
           <span hidden
-            onClick={(event) => {
+            onClick={(event) => {               
               if(!confirm('Удалить файл?')){
                 return;
               }
@@ -58,7 +64,10 @@ function _delFile(docId: string, fileName: string) {
     .then(async response => {
       if (response.ok) {
         const res = await response.json()
-        console.log(res)
+        const tagImageId = document.getElementById('imgFileNameList')
+          if (tagImageId) {
+            tagImageId.hidden = true
+              }
         return;
       }
       throw new Error(`response status: ${response.status}`)
@@ -70,5 +79,15 @@ function _showOptionalButton(event: React.MouseEvent<HTMLLIElement, MouseEvent>)
   const optionalButton = event.currentTarget.querySelector('span') as HTMLElement | undefined;
   if (optionalButton) {
     optionalButton.hidden = !optionalButton.hidden;
+  }
+}
+
+function _showImage(f: IDocFile) {
+  const tagImageId = document.getElementById('imageFileLinkList')
+  if (tagImageId) {
+    tagImageId.hidden = !tagImageId.hidden;
+    tagImageId.setAttribute('src', `http://localhost:3300/api/mnote/static/images/${f.fileName}`)
+    tagImageId.onclick = (() => tagImageId.hidden = !tagImageId.hidden)    
+    // tagImageIdFoo.onmouseleave = (() => tagImageIdFoo.hidden = !tagImageIdFoo.hidden)    
   }
 }

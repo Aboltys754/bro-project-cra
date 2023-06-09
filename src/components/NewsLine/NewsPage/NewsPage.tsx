@@ -72,11 +72,15 @@ export default function DocPage() {
       <ul>
         {news.files.map(file => {
           return <li key={file.fileName + news.id}>
-            <a
+            <div>
+              <img src={`http://localhost:3300/api/mnote/static/images/${file.fileName}`} alt="" className={styles.image}/>
+              <p>{file.originalName}</p>
+            </div>
+            {/* <a
               className="text-muted"
               href={`${serviceHost('informator')}/api/mnote/scan/${file.fileName}`}
               download={true}
-            >{file.originalName}</a>
+            >{file.originalName}</a> */}
           </li>
         })}
       </ul>
