@@ -12,7 +12,6 @@ type Props = {
 }
 
 export default function FileLinkList({ docId, files }: Props) {
-  console.log(files)
   if (!files || !files.length) {
     return <></>
   }
@@ -25,22 +24,22 @@ export default function FileLinkList({ docId, files }: Props) {
     </div>
 
     <ul>
-      {files.map((f, i) => (
-        <li key={i}
-          onClick={() => _showImage(f)}
+      {files.map((file, index) => (
+        <li key={index}
+          onClick={(event) => _showImage(file, event)}
           onMouseEnter={_showOptionalButton}
           onMouseLeave={_showOptionalButton}
         >
-          {f.originalName}
+          {file.originalName}
 
           <span hidden
-            onClick={(event) => {               
+            onClick={(event) => {         
               if(!confirm('Удалить файл?')){
                 return;
               }
               event.currentTarget.parentElement?.remove();
-              if (docId) {
-                _delFile(docId, f.fileName)
+              if (docId) {      
+                _delFile(docId, file.fileName)
               }
             }}
           ><small>удалить файл</small></span>
@@ -82,11 +81,11 @@ function _showOptionalButton(event: React.MouseEvent<HTMLLIElement, MouseEvent>)
   }
 }
 
-function _showImage(f: IDocFile) {
+function _showImage(file: IDocFile, event: React.MouseEvent<HTMLLIElement, MouseEvent>) {
   const tagImageId = document.getElementById('imageFileLinkList')
-  if (tagImageId) {
+  if (tagImageId && event.target === event.currentTarget) {
     tagImageId.hidden = !tagImageId.hidden;
-    tagImageId.setAttribute('src', `http://localhost:3300/api/mnote/static/images/${f.fileName}`)
+    tagImageId.setAttribute('src', `http://localhost:3300/api/mnote/static/images/${file.fileName}`)
     tagImageId.onclick = (() => tagImageId.hidden = !tagImageId.hidden)    
     // tagImageIdFoo.onmouseleave = (() => tagImageIdFoo.hidden = !tagImageIdFoo.hidden)    
   }

@@ -20,13 +20,13 @@ export default function FileInput({ fileList, setFileList, errorMessage }: Props
       <img src="" alt="" id="imgFileNameList" className={styles.image} hidden/>
     </div>
     <ul>
-      {fileList.map((f, i) => (
-        <li key={i}
-        onClick={() => _showImage(f)}
+      {fileList.map((file, index) => (
+        <li key={index}
+        onClick={(event) => _showImage(file, event)}
           onMouseEnter={_showOptionalButton}
           onMouseLeave={_showOptionalButton}
         >
-          {f.fileList.item(0)?.name}
+          {file.fileList.item(0)?.name}
 
           <span hidden
             onClick={() => {
@@ -34,7 +34,7 @@ export default function FileInput({ fileList, setFileList, errorMessage }: Props
               if (tagImageId) {
                 tagImageId.hidden = true
               }             
-              fileList.splice(i, 1);
+              fileList.splice(index, 1);
               setFileList([...fileList]);
             }}
           ><small>удалить файл</small></span>
@@ -51,11 +51,11 @@ function _showOptionalButton(event: React.MouseEvent<HTMLLIElement, MouseEvent>)
   }
 }
 
-function _showImage(f: fileListProps) {
+function _showImage(file: fileListProps, event: React.MouseEvent<HTMLLIElement, MouseEvent>) {
   const tagImageId = document.getElementById('imgFileNameList')
-  if (tagImageId) {
+  if (tagImageId && event.target === event.currentTarget) {
     tagImageId.hidden = !tagImageId.hidden;
-    tagImageId.setAttribute('src', f.fileImage)
+    tagImageId.setAttribute('src', file.fileImage)
     tagImageId.onclick = (() => tagImageId.hidden = !tagImageId.hidden)    
     // tagImageIdFoo.onmouseleave = (() => tagImageIdFoo.hidden = !tagImageIdFoo.hidden)    
   }
