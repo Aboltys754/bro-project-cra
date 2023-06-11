@@ -1,10 +1,13 @@
+import { useState } from "react"
+import styles from "./styles.module.css"
+import classNames from "classnames";
+
 import tokenManager from "../../../../libs/token.manager"
 import serviceHost from "../../../../libs/service.host"
 import fetchWrapper from "../../../../libs/fetch.wrapper"
 import { responseNotIsArray } from "../../../../middleware/response.validator"
 
-import styles from "./styles.module.css"
-import classNames from "classnames";
+
 
 type Props = {
   docId?: string
@@ -12,6 +15,8 @@ type Props = {
 }
 
 export default function FileLinkList({ docId, files }: Props) {
+  const [hiddenimageTag, setHiddenImageTag] = useState(true)
+  
   if (!files || !files.length) {
     return <></>
   }
@@ -20,13 +25,19 @@ export default function FileLinkList({ docId, files }: Props) {
     {files.length ? <><legend>Прикреплённые файлы:</legend><hr></hr></> : <></>}
 
     <div>
-      <img src="" alt="" id="imageFileLinkList" className={styles.image} hidden/>
+      <img src="" 
+           alt="foto" 
+           id="imageFileLinkList" 
+           className={styles.image} 
+           hidden={hiddenimageTag} 
+           onClick={() => setHiddenImageTag(true)}
+      />
     </div>
 
     <ul>
       {files.map((file, index) => (
         <li key={index}
-          onClick={(event) => _showImage(file, event)}
+          onClick={(event) => _showImage(file, event, setHiddenImageTag)}
           onMouseEnter={_showOptionalButton}
           onMouseLeave={_showOptionalButton}
         >
@@ -40,6 +51,7 @@ export default function FileLinkList({ docId, files }: Props) {
               event.currentTarget.parentElement?.remove();
               if (docId) {      
                 _delFile(docId, file.fileName)
+                setHiddenImageTag(true)
               }
             }}
           ><small>удалить файл</small></span>
@@ -62,11 +74,12 @@ function _delFile(docId: string, fileName: string) {
     .then(responseNotIsArray)
     .then(async response => {
       if (response.ok) {
-        const res = await response.json()
         const tagImageId = document.getElementById('imgFileNameList')
           if (tagImageId) {
-            tagImageId.hidden = true
+            console.log(1)
+            tagImageId.hidden = !tagImageId.hidden
               }
+        const res = await response.json()        
         return;
       }
       throw new Error(`response status: ${response.status}`)
@@ -77,16 +90,19 @@ function _delFile(docId: string, fileName: string) {
 function _showOptionalButton(event: React.MouseEvent<HTMLLIElement, MouseEvent>) {
   const optionalButton = event.currentTarget.querySelector('span') as HTMLElement | undefined;
   if (optionalButton) {
-    optionalButton.hidden = !optionalButton.hidden;
+    event.type === "mouseleave" ? optionalButton.hidden = true : optionalButton.hidden = false
   }
 }
 
-function _showImage(file: IDocFile, event: React.MouseEvent<HTMLLIElement, MouseEvent>) {
+function _showImage(
+  file: IDocFile, 
+  event: React.MouseEvent<HTMLLIElement, MouseEvent>, 
+  setHiddenImageTag: React.Dispatch<React.SetStateAction<boolean>>) {
+
   const tagImageId = document.getElementById('imageFileLinkList')
   if (tagImageId && event.target === event.currentTarget) {
-    tagImageId.hidden = !tagImageId.hidden;
+    setHiddenImageTag(false)
     tagImageId.setAttribute('src', `http://localhost:3300/api/mnote/static/images/${file.fileName}`)
-    tagImageId.onclick = (() => tagImageId.hidden = !tagImageId.hidden)    
     // tagImageIdFoo.onmouseleave = (() => tagImageIdFoo.hidden = !tagImageIdFoo.hidden)    
   }
 }
