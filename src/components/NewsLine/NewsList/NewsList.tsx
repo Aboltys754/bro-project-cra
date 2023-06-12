@@ -5,21 +5,25 @@ import styles from "./styles.module.css";
 import classNames from "classnames";
 
 import session from "../../../libs/token.manager";
-import finder from "../../../libs/deep.finder";
 import NewsRow from "../NewsRow/NewsRow";
-import SearchForm from "../SearchForm/SearchForm";
 import NextSearch from "../NextSearch/NextSearch";
-import TaskPage from "../TaskPage/TaskPage";
-import EditForm from "../EditForm/EditForm";
 import { Link } from "react-router-dom";
+
+// количество отображаемых новостей
+const docsLimit = 25
+
+// для определения откуда идет переход в форму создания слайдов. Если null или undefine тогда переход с кнопки создать слайд
+const stateFunction = null
 
 
 export default function NewsList() {
   session.subscribe('SlidesList');  
+  // Получение всех новостей с сервера
   const [docs, setDocs] = useState(useLoaderData() as INews[])
-  const [showForm, setShowForm] = useState(false);
+  // отображает кнопку загрузить еще
+  const [showNextButton, setShowNextButton] = useState(true);
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
-  const stateFunction = "creature"
+  
 
   return <div className={styles.root} >
     <h3>Слайды</h3>  
@@ -28,14 +32,14 @@ export default function NewsList() {
     
     {docs?.map(news => <NewsRow key={news.id} {...news} />)}
 
-        {/* {docs.length > 0 ? <NextSearch
-          setDocs={(newDocs: IDoc[]) => setDocs([...docs, ...newDocs])}
+        {docs.length > 0 ? <NextSearch
+          setDocs={(newDocs: INews[]) => setDocs([...docs, ...newDocs])}
           lastId={docs[docs.length - 1]?.id}
           limit={docsLimit}
           showNextButton={showNextButton}
           setShowNextButton={setShowNextButton}
         />
-          : <></>} */}
+          : <></>}
   </div>
 }
 

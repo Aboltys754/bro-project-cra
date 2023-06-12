@@ -30,6 +30,7 @@ export default function EditForm() {
   const navigate = useNavigate();
   const stateNews = useLocation().state.news as INews;
 
+
     return (
       <div className={styles.root}>
         <form 

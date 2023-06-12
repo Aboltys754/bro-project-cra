@@ -8,7 +8,7 @@ import { responseNotIsArray } from "../../../middleware/response.validator"
 import classNames from "classnames";
 
 type Props = {
-  setDocs: (newDocs: IDoc[]) => void
+  setDocs: (newDocs: INews[]) => void
   lastId: string
   limit: number
   showNextButton: boolean
@@ -33,7 +33,7 @@ async function onSubmit(
   lastId: string,
   limit: number,
   setDisabled: React.Dispatch<React.SetStateAction<boolean>>,
-  setDocs: (newDocs: IDoc[]) => void,
+  setDocs: (newDocs: INews[]) => void,
   setShowNextButton: React.Dispatch<React.SetStateAction<boolean>>
 ) {
 
@@ -41,7 +41,7 @@ async function onSubmit(
 
   const query = sessionStorage.getItem('lastQuery') || "";
 
-  fetchWrapper(() => fetch(`${serviceHost('informator')}/api/informator/docflow/search/doc/?title=${query}&limit=${limit}&last=${lastId}`, {
+  fetchWrapper(() => fetch(`${serviceHost('mnote')}/api/mnote/search/note/?title=${query}&limit=${limit}&last=${lastId}`, {
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`
     },
