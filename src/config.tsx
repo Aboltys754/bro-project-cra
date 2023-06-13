@@ -23,5 +23,5 @@ export default {
       host: prod ? '' : 'http://localhost',
       port: prod ? 0 : 3300,
     }
-  }
+  },
 }

@@ -1,0 +1,24 @@
+.root {
+}
+
+:root{
+  --slide-width: 180px;
+}
+
+.slider {
+  position: relative;
+  border: solid 1px green;
+  width: var(--slide-width);
+  height: 280px;
+  overflow: hidden;
+  /* display: flex;
+  flex-flow: row nowrap; */
+}
+
+.slidesWrapper{
+  position: absolute;
+  display: flex;
+  flex-flow: row nowrap;
+  border: solid 3px red;
+  transition: all 0.5s ease-out;
+}

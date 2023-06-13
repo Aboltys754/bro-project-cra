@@ -14,5 +14,5 @@ export default function serviceHost(name: ServiceName): string {
 }
 
 function _makeURL(host: string, port: number): string {
-  return `${host || ''}${port? ':' : ''}${port || ''}`
+  return `${host || ''}${port ? ':' : ''}${port || ''}`
 }

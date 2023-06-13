@@ -5,6 +5,7 @@ export default class TokenManager implements ITokenManager {
 
   _refresh = ""
   _access = ""
+  _subscribe: Map<string, (value: boolean) => void> = new Map()
 
   constructor() {
     this.setRefresh(localStorage.getItem(`session_id`) || "")
@@ -30,6 +31,21 @@ export default class TokenManager implements ITokenManager {
       return false
     }
 
+    /**
+     * если токен рефрешиться, то отправляем запрос в массив подписчиков
+     * иначе выполняем fetch запрос
+     * при этом чтобы создать первого подписчика - записываем в this._subscribe
+     * простую функцию, которая возвращает полученный аргумент с типом boolean
+     */
+    if(this._subscribe.size > 0) {
+      return new Promise(res => {
+        this._subscribe.set(Date.now().toString(), b => res(b))
+      })
+    }
+    else {
+      this._subscribe.set(Date.now().toString(), b => b)
+    }
+
     return fetch(`${serviceHost("mauth")}/api/mauth/refresh`, {
       method: "GET",
       headers: {
@@ -50,6 +66,10 @@ export default class TokenManager implements ITokenManager {
         this.setAccess("");
         this.setRefresh("");
         return false
+      })
+      .finally(() => {
+        this._subscribe.forEach(res => res(true));
+        this._subscribe = new Map();
       })
   }
 }
