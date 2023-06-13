@@ -22,10 +22,23 @@ export default {
           loader: () => fetchWrapper(_getNews).catch(() => redirect('/auth'))
         },
         {
-          path: "/newsLine/editForm",
+          path: "/newsLine/createNews",
           element: <EditForm />,
           loader: () => session.start(),
           
+        },
+        {
+          path: "/newsLine/editNews/:id",
+          element: <EditForm />,
+          loader: ({ params }: LoaderFunctionArgs) => fetchWrapper(() => _getOneNews(params.id))
+            .then(responseNotIsArray)
+            .then(res => {
+              if (res.status === 404) {
+                return redirect('/docflow')
+              }
+              return res;
+            })
+            .catch(() => redirect('/auth')),          
         },
         {
           path: "/newsLine/:id",

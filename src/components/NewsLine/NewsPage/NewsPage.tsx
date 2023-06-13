@@ -35,7 +35,7 @@ export default function DocPage() {
         <div className={styles.buttons}>
           {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ? */}
           <div className={styles.buttonUp}>
-            <Link to={`/newsLine/editForm`} state={{news}}>
+            <Link to={`/newsLine/editNews/${news.id}`}>
               <IconEdit height="60px" width="60px" className={styles.svgButton}/>
               Редактировать
             </Link>

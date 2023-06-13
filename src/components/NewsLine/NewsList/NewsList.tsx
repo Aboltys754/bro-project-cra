@@ -31,7 +31,7 @@ export default function NewsList() {
 
     <SearchForm setShowNextButton={setShowNextButton} setDocs={setDocs} limit={docsLimit}/>
 
-    <Link to={`/newsLine/editForm`} state={{stateFunction}} className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`, styles.button)}>Создать слайд</Link>
+    <Link to={`/newsLine/createNews`} state={{stateFunction}} className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`, styles.button)}>Создать слайд</Link>
     
     {docs?.map(news => <NewsRow key={news.id} {...news} />)}
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, NavigateFunction, useLocation } from "react-router-dom"
+import { useNavigate, NavigateFunction, useLoaderData } from "react-router-dom"
 import styles from "./styles.module.css"
 import classNames from "classnames";
 
@@ -25,31 +25,32 @@ type fileListProps = {
 export default function EditForm() {
   session.subscribe('NewsLine-EditList');
   const [errorMessage, setErrorResponse] = useState<IErrorMessage>();
+  // создается пустой список для добавления файлов
   const [fileList, setFileList] = useState<fileListProps[]>([])
+  // передается из Link по нажатию кнопки редактировать конкретный документ
+  const [news, setNews] = useState(useLoaderData() as INews);
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
   const navigate = useNavigate();
-  const stateNews = useLocation().state.news as INews;
-
 
     return (
       <div className={styles.root}>
         <form 
-          onSubmit={event => _onSubmit(event, setErrorResponse, fileList, stateNews, navigate)}
+          onSubmit={event => _onSubmit(event, setErrorResponse, fileList, news, navigate)}
         >
           <fieldset className="form-group">
 
-            <TitleDoc errorMessage={errorMessage} title={stateNews?.title}/> 
+            <TitleDoc errorMessage={errorMessage} title={news?.title}/> 
 
-            <FileLinkList docId={stateNews?.id} files={stateNews?.files} />
+            <FileLinkList docId={news?.id} files={news?.files} />
 
             <FileNameList fileList={fileList} setFileList={setFileList} errorMessage={errorMessage} />
 
             <FileInput errorMessage={errorMessage}
               setFileList={(file: fileListProps) => setFileList([...fileList, file])} />
 
-            <TextPane description={stateNews?.message}/>
+            <TextPane description={news?.message}/>
 
-            <IsPublic isPublic={stateNews?.isPublic}/>            
+            <IsPublic isPublic={news?.isPublic}/>            
 
             <>
               <input type="submit" 
