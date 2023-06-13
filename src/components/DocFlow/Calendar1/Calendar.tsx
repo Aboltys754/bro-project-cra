@@ -21,14 +21,14 @@ export default function Calendar() {
     const [showSelectForm, setShowSelectForm] = useState(true)
     
     return (
-        <div className={styles.root}>
+        <div className={styles.root} >
             {showSelectForm 
             ? hiddenCalendar
                 ? <div className={styles.icon} onClick={() => setHiddenCalendar(!hiddenCalendar)}>
-                    <IconCalendar width="30px" height="30px" className={styles.iconSvg}/>
+                    <IconCalendar height="30px" width="30px" className={styles.iconSvg}/>
                     <div className={styles.date}>
-                        <DateComponent date={date}/>.
-                        <MonthComponent month={month} setMonth={setMonth} year={year} setYear={setYear} typeEvent={"icon"}/>.
+                        <DateComponent date={date}/>:
+                        <MonthComponent month={month} setMonth={setMonth} year={year} setYear={setYear} typeEvent={"icon"}/>:
                         <YearComponent year={year} />
                     </div>
                   </div>
@@ -44,8 +44,7 @@ export default function Calendar() {
                     showSelectForm={showSelectForm}
                     setShowSelectForm={setShowSelectForm}
                     />            
-            : <SelectForm month={month} setMonth={setMonth} year={year} setYear={setYear} showSelectForm={showSelectForm} setShowSelectForm={setShowSelectForm}/>}
-            <input type="data" name="time" value={`${date}.${month}.${year}`} hidden />           
+            : <SelectForm month={month} setMonth={setMonth} year={year} setYear={setYear} showSelectForm={showSelectForm} setShowSelectForm={setShowSelectForm}/>}            
         </div>
     )
 }
