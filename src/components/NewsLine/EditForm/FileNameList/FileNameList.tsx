@@ -1,6 +1,7 @@
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage"
 import styles from "./styles.module.css"
 import classNames from "classnames";
+import { useState } from "react"
 
 type fileListProps = {
   fileList: FileList,
@@ -14,28 +15,32 @@ type Props = {
 }
 
 export default function FileInput({ fileList, setFileList, errorMessage }: Props) {
+  const [hiddenimageTag, setHiddenImageTag] = useState(true)
   return <div className={classNames("mt-4", styles.root)}>
     {fileList.length ? <><legend>Файлы:</legend><hr></hr></> : <></>}
     <div>
-      <img src="" alt="" id="imgFileNameList" className={styles.image} hidden/>
+      <img src="" 
+           alt="foto" 
+           id="imgFileNameList" 
+           className={styles.image} 
+           hidden={hiddenimageTag} 
+           onClick={() => setHiddenImageTag(true)}
+      />
     </div>
     <ul>
       {fileList.map((file, index) => (
         <li key={index}
-        onClick={(event) => _showImage(file, event)}
+        onClick={(event) => _showImage(file, event, setHiddenImageTag)}
           onMouseEnter={_showOptionalButton}
           onMouseLeave={_showOptionalButton}
         >
           {file.fileList.item(0)?.name}
 
           <span hidden
-            onClick={() => {
-              const tagImageId = document.getElementById('imgFileNameList')
-              if (tagImageId) {
-                tagImageId.hidden = true
-              }             
+            onClick={() => {                          
               fileList.splice(index, 1);
               setFileList([...fileList]);
+              setHiddenImageTag(true);
             }}
           ><small>удалить файл</small></span>
         </li>))}
@@ -51,12 +56,16 @@ function _showOptionalButton(event: React.MouseEvent<HTMLLIElement, MouseEvent>)
   }
 }
 
-function _showImage(file: fileListProps, event: React.MouseEvent<HTMLLIElement, MouseEvent>) {
+function _showImage(
+  file: fileListProps, 
+  event: React.MouseEvent<HTMLLIElement, MouseEvent>, 
+  setHiddenImageTag: React.Dispatch<React.SetStateAction<boolean>>) {
   const tagImageId = document.getElementById('imgFileNameList')
   if (tagImageId && event.target === event.currentTarget) {
-    tagImageId.hidden = !tagImageId.hidden;
+    setHiddenImageTag(false)    
+    // tagImageId.hidden = !tagImageId.hidden;
     tagImageId.setAttribute('src', file.fileImage)
-    tagImageId.onclick = (() => tagImageId.hidden = !tagImageId.hidden)    
+    // tagImageId.onclick = (() => tagImageId.hidden = !tagImageId.hidden)    
     // tagImageIdFoo.onmouseleave = (() => tagImageIdFoo.hidden = !tagImageIdFoo.hidden)    
   }
 }

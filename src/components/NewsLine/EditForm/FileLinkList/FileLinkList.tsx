@@ -50,7 +50,7 @@ export default function FileLinkList({ docId, files }: Props) {
               }
               event.currentTarget.parentElement?.remove();
               if (docId) {      
-                _delFile(docId, file.fileName)
+                _delFile(docId, file.fileName, setHiddenImageTag)
                 setHiddenImageTag(true)
               }
             }}
@@ -60,7 +60,7 @@ export default function FileLinkList({ docId, files }: Props) {
   </div>
 }
 
-function _delFile(docId: string, fileName: string) {
+function _delFile(docId: string, fileName: string, setHiddenImageTag: React.Dispatch<React.SetStateAction<boolean>> ) {
   const fd = new FormData()
   fd.append('fileName', fileName);
 
@@ -74,10 +74,9 @@ function _delFile(docId: string, fileName: string) {
     .then(responseNotIsArray)
     .then(async response => {
       if (response.ok) {
-        const tagImageId = document.getElementById('imgFileNameList')
+        const tagImageId = document.getElementById('imageFileLinkList')
           if (tagImageId) {
-            console.log(1)
-            tagImageId.hidden = !tagImageId.hidden
+            setHiddenImageTag(true)
               }
         const res = await response.json()        
         return;
@@ -98,7 +97,6 @@ function _showImage(
   file: IDocFile, 
   event: React.MouseEvent<HTMLLIElement, MouseEvent>, 
   setHiddenImageTag: React.Dispatch<React.SetStateAction<boolean>>) {
-
   const tagImageId = document.getElementById('imageFileLinkList')
   if (tagImageId && event.target === event.currentTarget) {
     setHiddenImageTag(false)

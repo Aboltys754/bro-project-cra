@@ -8,6 +8,7 @@ import session from "../../../libs/token.manager";
 import NewsRow from "../NewsRow/NewsRow";
 import NextSearch from "../NextSearch/NextSearch";
 import { Link } from "react-router-dom";
+import SearchForm from "../SearchForm/SearchForm";
 
 // количество отображаемых новостей
 const docsLimit = 25
@@ -28,6 +29,8 @@ export default function NewsList() {
   return <div className={styles.root} >
     <h3>Слайды</h3>  
 
+    <SearchForm setShowNextButton={setShowNextButton} setDocs={setDocs} limit={docsLimit}/>
+
     <Link to={`/newsLine/editForm`} state={{stateFunction}} className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`, styles.button)}>Создать слайд</Link>
     
     {docs?.map(news => <NewsRow key={news.id} {...news} />)}
@@ -42,6 +45,3 @@ export default function NewsList() {
           : <></>}
   </div>
 }
-
-
-
