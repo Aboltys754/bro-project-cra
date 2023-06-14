@@ -53,7 +53,7 @@ async function onSubmit(
   // const url = fd.get('query') ? `/api/informator/docflow/search/doc/?title=${fd.get('query')}&limit=${limit}&last=`
   //   : `/api/informator/docflow`
 
-  fetchWrapper(() => fetch(`${serviceHost('mnote')}/api/mnote/search/note/?title=${fd.get('query')}&limit=${limit}&last=`, {
+  fetchWrapper(() => fetch(`${serviceHost('mnote')}/api/mnote/search/note/?search=${fd.get('query')}&limit=${limit}&last=`, {
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`
     },
