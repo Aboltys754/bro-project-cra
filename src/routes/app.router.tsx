@@ -16,6 +16,7 @@ import settingRouter from "./setting.router"
 import docFlowRouter from "./docflow.router"
 import userPageRoute from "./userPage.route"
 import newsLineRouter from "./newsLine.router"
+import sliderTest from "./sliderTest.router"
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,8 @@ const router = createBrowserRouter([
   settingRouter,
   docFlowRouter,
   userPageRoute,
-  newsLineRouter
+  newsLineRouter,
+  sliderTest
 ])
 
 export default <RouterProvider router={router} />

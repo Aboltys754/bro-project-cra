@@ -100,7 +100,7 @@ export default function Navigate() {
                 }
 
                 <li className="nav-item">
-                  <Link to="/userPage" className="nav-link">test</Link>
+                  <Link to="/sliderTest" className="nav-link">testSlider</Link>
                 </li>
 
                 {/* <li className="nav-item">
