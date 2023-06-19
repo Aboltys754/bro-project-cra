@@ -9,7 +9,7 @@ export default function BanerTest() {
     return <>
         <Navigate />
         <div className={styles.root} >
-            <h1>Управление слайдами</h1>
+            <h1>Тест Слайдер</h1>
             <hr />
             <Outlet />
         </div>

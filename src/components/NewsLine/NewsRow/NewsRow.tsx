@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
-
 import classNames from "classnames"
 import styles from "./styles.module.css"
+
+import serviceHost from "../../../libs/service.host"
 import { Converter } from "md-conv";
 import {ReactComponent as IconYes} from "../../../img/SVG/yes.svg"
 import {ReactComponent as IconNo} from "../../../img/SVG/no.svg"
-import {ReactComponent as Photo} from "../../../img/SVG/photo.svg"
-import {ReactComponent as Prohibitionsignal} from "../../../img/SVG/prohibitionsignal.svg"
 
 const converter = new Converter()
 
@@ -19,7 +18,7 @@ export default function DocRow(news: INews) {
         : <div className={styles.isPublic}><IconNo width="15px" height="15px" className={styles.svgButton}/><p>Не опубликован</p></div>}
     <div className={styles.content}>     
       {news.files[0]?.fileName
-        ? <img src={`http://localhost:3300/api/mnote/static/images/${news.files[0].fileName}`} 
+        ? <img src={`${serviceHost("mnote")}/api/mnote/static/images/${news.files[0].fileName}`} 
                alt="foto" 
                className={styles.foto}/> 
 

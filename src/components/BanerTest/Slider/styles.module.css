@@ -1,0 +1,23 @@
+.root {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.slides {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 10px 0 10px;
+}
+
+.simbol {
+    margin: 0 20px 0 20px;
+    font-size: 60px;
+    cursor: pointer;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
