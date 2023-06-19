@@ -21,3 +21,15 @@
     -webkit-user-select: none;
     user-select: none;
 }
+
+.red {
+    background-color: red !important;
+}
+
+.green {
+    background-color: green !important;
+}
+
+.blue {
+    background-color: blue !important;
+}

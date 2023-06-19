@@ -24,13 +24,13 @@ export default function Slider() {
     useEffect(() => {
         setViewScreen(document.documentElement.clientWidth)
     }, [window.onresize = () =>  setViewScreen(document.documentElement.clientWidth)])
-    console.log(slides)
+    console.log(viewScreen)
 
     return (
 
         !slides.length ? <></> :
     
-        <div className={classNames(classOnTheSizeWindow())}>
+        <div className={classNames(classOnTheSizeWindow(viewScreen))}>
             <p className={styles.simbol} onClick={() => console.log("+")}>&#60;</p>            
                 <div  className={styles.slides}>
                     {slides.map((slide, index) => (    
@@ -42,8 +42,12 @@ export default function Slider() {
     )
 }
 
-function classOnTheSizeWindow() {
-    return (
-        styles.root
-    )
+function classOnTheSizeWindow(viewScreen: number) {
+    if (viewScreen > 900) {
+        return styles.red
+    } else if (500 < viewScreen && viewScreen <= 900) {
+        return styles.green
+    } else if (viewScreen <= 500) {
+        return styles.blue
+    }
 }
