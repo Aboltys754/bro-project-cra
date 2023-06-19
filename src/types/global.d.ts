@@ -42,7 +42,8 @@ interface ISlider {
   files: IStaticFile[] | [],
   id: string,
   isPublic: boolean,
-  title: string, message: string,
+  title: string, 
+  message: string,
 }
 
 /*
