@@ -1,46 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 
 import serviceHost from "../../../libs/service.host"
 import styles from "./styles.module.css"
+import classNames from "classnames";
 
 import Slide from "../Slide/Slide";
 
-export default function Slider() {
 
-    type ISlide = {
-        createdAt: string,
-        files: IStaticFile[] | [],
-        id: string,
-        isPublic: boolean,
-        message: string,
-        title: string,
-        updatedAt: string,
-    }
+type ISlide = {
+    createdAt: string,
+    files: IStaticFile[] | [],
+    id: string,
+    isPublic: boolean,
+    message: string,
+    title: string,
+    updatedAt: string,
+}
 
+export default function Slider() {    
     const slides = useLoaderData() as ISlide[];
-
-
-    // window.onresize = function() {
-    //     console.log(document.documentElement.clientWidth)
-    // }
-    
-    
+    const [viewScreen, setViewScreen] = useState(document.documentElement.clientWidth);
+    useEffect(() => {
+        setViewScreen(document.documentElement.clientWidth)
+    }, [window.onresize = () =>  setViewScreen(document.documentElement.clientWidth)])
     console.log(slides)
-        if(!slides.length) {
-            return <></>
-        }
 
     return (
-        <div className={styles.root}>
+
+        !slides.length ? <></> :
+    
+        <div className={classNames(classOnTheSizeWindow())}>
             <p className={styles.simbol} onClick={() => console.log("+")}>&#60;</p>            
                 <div  className={styles.slides}>
                     {slides.map((slide, index) => (    
-                        <Slide key={index} {...slide}/>            
-                        // <img src={`${serviceHost("mnote")}/api/mnote/static/images/${slide.files[0].fileName}`} alt="Слайд"  key={index}/>                
+                        <Slide key={slide.id} {...slide}/>                                        
                     ))}
                 </div>
             <p className={styles.simbol} onClick={() => console.log("-")}>&#62;</p>            
         </div>
+    )
+}
+
+function classOnTheSizeWindow() {
+    return (
+        styles.root
     )
 }

@@ -1,6 +1,9 @@
+import serviceHost from "../../../libs/service.host"
+import styles from "./styles.module.css"
+
 
 type ISlide = {
-    key: number
+    key: string
     createdAt: string,
     files: IStaticFile[] | [],
     id: string,
@@ -12,8 +15,8 @@ type ISlide = {
 
 export default function Slide(slide: ISlide) {
     return (
-        <div>
-            1
-        </div>
+        <>
+        <img src={`${serviceHost("mnote")}/api/mnote/static/images/${slide.files[0].fileName}`} alt="Слайд"/>
+        </>
     )
 }
