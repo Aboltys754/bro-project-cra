@@ -3,9 +3,9 @@ import { useState } from "react";
 
 import session from "../../../libs/token.manager"
 import tokenManager from "../../../libs/token.manager"
+import serviceHost from "../../../libs/service.host"
 import { responseNotIsArray } from "../../../middleware/response.validator";
 import fetchWrapper from "../../../libs/fetch.wrapper";
-import serviceHost from "../../../libs/service.host";
 import styles from "./styles.module.css"
 import classNames from "classnames";
 import BackArrow from "../BackArrow/BackArrow";
@@ -33,16 +33,16 @@ export default function DocPage() {
         </div>       
 
         <div className={styles.buttons}>
-          {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Редактировать') ? */}
+          {session.getAccess() !== "" ?
           <div className={styles.buttonUp}>
             <Link to={`/newsLine/editNews/${news.id}`}>
               <IconEdit height="60px" width="60px" className={styles.svgButton}/>
               Редактировать
             </Link>
           </div>                
-            {/* // : <></>} */}
+            : <></>}
 
-          {/* {_checkUpdateAction(doc.directing.id, doc.task.id, 'Удалить') ? */}
+          {session.getAccess() !== "" ?
                   <div className={classNames(styles.buttonUp)}
                   onClick={() => {
                     _delNews(news.id);
@@ -51,7 +51,7 @@ export default function DocPage() {
                     <IconDelete height="60px" width="55px" className={styles.svgButton}/>
                   Удалить               
                   </div>            
-            {/* : <></>} */}
+          : <></>}
         </div>          
       </div>
       
@@ -73,14 +73,9 @@ export default function DocPage() {
         {news.files.map(file => {
           return <li key={file.fileName + news.id}>
             <div>
-              <img src={`http://localhost:3300/api/mnote/static/images/${file.fileName}`} alt="" className={styles.image}/>
+              <img src={`${serviceHost('mnote')}/api/mnote/static/images/${file.fileName}`} alt="" className={styles.image}/>
               <p>{file.originalName}</p>
             </div>
-            {/* <a
-              className="text-muted"
-              href={`${serviceHost('informator')}/api/mnote/scan/${file.fileName}`}
-              download={true}
-            >{file.originalName}</a> */}
           </li>
         })}
       </ul>

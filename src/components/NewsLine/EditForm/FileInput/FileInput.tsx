@@ -19,7 +19,6 @@ export default function FileInput({ errorMessage, setFileList }: Props) {
     onClick={event => (event.currentTarget.querySelector('input') as HTMLElement).click()}
     onDrop={event => {
       event.preventDefault()
-      // setFileList(event.dataTransfer.files)
       setFileList({fileList: event.dataTransfer.files, fileImage: URL.createObjectURL(event.dataTransfer.files?.[0])})
     }}
     onDragEnter={event => event.preventDefault()}
@@ -44,11 +43,5 @@ function _change(
     const tempObjectFiles = {fileList: files, fileImage: URL.createObjectURL(event.currentTarget.files?.[0])}
     setFileList(tempObjectFiles)
   }
-  // const foo = URL.createObjectURL(event.currentTarget.files?.[0])
-  // console.log(event.currentTarget.files?.[0])
-
-  // if (files) {
-  //   setFileList(files);
-  // }
 
 }

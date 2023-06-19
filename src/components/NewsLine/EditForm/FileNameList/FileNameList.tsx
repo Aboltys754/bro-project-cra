@@ -63,9 +63,6 @@ function _showImage(
   const tagImageId = document.getElementById('imgFileNameList')
   if (tagImageId && event.target === event.currentTarget) {
     setHiddenImageTag(false)    
-    // tagImageId.hidden = !tagImageId.hidden;
-    tagImageId.setAttribute('src', file.fileImage)
-    // tagImageId.onclick = (() => tagImageId.hidden = !tagImageId.hidden)    
-    // tagImageIdFoo.onmouseleave = (() => tagImageIdFoo.hidden = !tagImageIdFoo.hidden)    
+    tagImageId.setAttribute('src', file.fileImage)  
   }
 }

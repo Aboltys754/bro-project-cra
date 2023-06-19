@@ -9,7 +9,6 @@ import styles from "./styles.module.css"
 import classNames from "classnames";
 
 type Props = {
-  // setShowForm: React.Dispatch<React.SetStateAction<boolean>>
   setDocs: React.Dispatch<React.SetStateAction<INews[]>>
   setShowNextButton: React.Dispatch<React.SetStateAction<boolean>>
   limit: number
@@ -17,8 +16,7 @@ type Props = {
 
 export default function SearchForm({ setShowNextButton, setDocs, limit }: Props) {
   const [disabled, setDisabled] = useState(false)
-  const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
-  
+  const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme  
 
   return <form id="searchForm" className={styles.root}
     onSubmit={(event) => {
@@ -31,8 +29,6 @@ export default function SearchForm({ setShowNextButton, setDocs, limit }: Props)
     </fieldset>
   </form>
 }
-
-
 
 async function onSubmit(
   event: React.FormEvent<HTMLFormElement>,
@@ -50,9 +46,6 @@ async function onSubmit(
 
   setDisabled(true)
 
-  // const url = fd.get('query') ? `/api/informator/docflow/search/doc/?title=${fd.get('query')}&limit=${limit}&last=`
-  //   : `/api/informator/docflow`
-
   fetchWrapper(() => fetch(`${serviceHost('mnote')}/api/mnote/search/note/?search=${fd.get('query')}&limit=${limit}&last=`, {
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`
@@ -64,14 +57,11 @@ async function onSubmit(
       if (response.ok) {
         const res = await response.json()
         setDocs(res)
-
         setShowNextButton(!!res.length)
-
         return;
       }
       throw new Error(`response status: ${response.status}`)
     })
     .catch(error => console.log(error.message))
     .finally(() => setDisabled(false));
-
 }

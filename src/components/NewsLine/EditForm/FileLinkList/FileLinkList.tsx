@@ -100,7 +100,6 @@ function _showImage(
   const tagImageId = document.getElementById('imageFileLinkList')
   if (tagImageId && event.target === event.currentTarget) {
     setHiddenImageTag(false)
-    tagImageId.setAttribute('src', `http://localhost:3300/api/mnote/static/images/${file.fileName}`)
-    // tagImageIdFoo.onmouseleave = (() => tagImageIdFoo.hidden = !tagImageIdFoo.hidden)    
+    tagImageId.setAttribute('src', `${serviceHost('mnote')}/api/mnote/static/images/${file.fileName}`)
   }
 }
