@@ -17,6 +17,7 @@ import styles from "./styles.module.css"
 import SubmitButton from "./SubmitButton/SubmitButton";
 import Signatory from "./Signatory/Signatory";
 import OptionalHeader from "./OptionalHeader/OptionalHeader";
+import Calendar from "../Calendar/Calendar";
 
 type Props = {
   typeDoc: DocType
@@ -63,6 +64,8 @@ export default function EditForm({ doc, typeDoc }: Props) {
 
       <FileInput errorMessage={errorMessage}
         setFileList={(file: FileList) => setFileList([...fileList, file])} />
+
+      <Calendar />
 
       <Signatory
         typeDoc={typeDoc}

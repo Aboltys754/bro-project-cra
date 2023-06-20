@@ -1,0 +1,31 @@
+.root {
+    margin: 20px 20px 20px 0;
+}
+
+.root p {
+    margin: 0 0 0 5px;
+    padding: 0;
+}
+
+.icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 170px;
+    cursor: pointer;
+}
+
+.date {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--color);
+}
+
+.svg {
+    height: 40px;
+    width: 40px;
+    fill: var(--color);
+    stroke: var(--color);
+}

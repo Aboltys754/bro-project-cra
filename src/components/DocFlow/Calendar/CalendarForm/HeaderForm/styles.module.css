@@ -1,0 +1,45 @@
+.root {
+    border: 3px #000 solid;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 225px;
+}
+
+.arrow {
+    border: 2px #000 solid;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.arrow:hover {
+    fill: #fff;
+    border: 2px #fff solid;
+    background-color: #000;
+}
+
+.form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 2px 5px 2px 5px;
+    padding: 5px;
+    cursor: default;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    border: 3px #fff solid;
+    border-radius: 10px;
+}
+
+.form:hover {
+    border: 3px #fff solid;
+    border-radius: 10px;
+    color: #fff;
+    background-color: #000;
+}
