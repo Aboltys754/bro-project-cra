@@ -19,6 +19,7 @@ type TypeCalendarForm = {
 
 
 export default function CalendarForm({hiddenCalendar, setHiddenCalendar, date, setDate, month, setMonth, year, setYear, showSelectForm, setShowSelectForm}: TypeCalendarForm) {
+
     return (
         <div className={styles.root}>
             <HeaderForm 
