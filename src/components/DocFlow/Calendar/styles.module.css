@@ -20,12 +20,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    color: var(--color);
 }
 
 .svg {
     height: 40px;
     width: 40px;
-    fill: var(--color);
-    stroke: var(--color);
+    /* fill: red; */
 }
