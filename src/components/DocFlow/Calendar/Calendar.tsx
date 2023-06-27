@@ -21,7 +21,6 @@ export default function Calendar() {
     const [hiddenCalendar, setHiddenCalendar] = useState(true)
     // Отображает форму выбора года и месяца
     const [showSelectForm, setShowSelectForm] = useState(true)
-    console.log()
     
     return (
         <div className={styles.root} >
