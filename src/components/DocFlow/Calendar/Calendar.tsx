@@ -7,10 +7,10 @@ import MonthComponent from "./MonthComponent/MonthComponent";
 import DateComponent from "./DateComponent/DateComponent";
 import CalendarForm from "./CalendarForm/CalendarForm";
 import SelectForm from "./SelectForm/SelectForm";
+import classNames from "classnames";
 
 
-
-export default function Calendar() {
+export default function Calendar({stylesCalendar}: {stylesCalendar: string}) {
     const newDate = new Date();
     const [date, setDate] = useState(newDate.getDate());
     const [month, setMonth] = useState(newDate.getMonth());
@@ -23,15 +23,15 @@ export default function Calendar() {
     const [showSelectForm, setShowSelectForm] = useState(true)
     
     return (
-        <div className={styles.root} >
+        <div className={classNames(styles.root)} data-calendarTheme={stylesCalendar}>
             <p>Дата выполнения</p>
             {showSelectForm 
             ? hiddenCalendar
                 ? <div className={styles.icon} onClick={() => setHiddenCalendar(!hiddenCalendar)}>
                     <IconCalendar className={styles.svg}/>
                     <div className={styles.date}>
-                        <DateComponent date={date}/>:
-                        <MonthComponent month={month} setMonth={setMonth} year={year} setYear={setYear} typeEvent={"icon"}/>:
+                        <DateComponent date={date}/>.
+                        <MonthComponent month={month} setMonth={setMonth} year={year} setYear={setYear} typeEvent={"icon"}/>.
                         <YearComponent year={year} />
                     </div>
                 </div>

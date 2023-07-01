@@ -33,7 +33,8 @@ export default function CalendarForm({hiddenCalendar, setHiddenCalendar, date, s
             <FooterForm 
                 date={date}
                 setDate={setDate} 
-                month={month} 
+                month={month}
+                setMonth={setMonth}
                 year={year}
                 hiddenCalendar={hiddenCalendar}
                 setHiddenCalendar={setHiddenCalendar}/>

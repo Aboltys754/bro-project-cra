@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, NavigateFunction } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import tokenManager from "../../../libs/token.manager"
 import serviceHost from "../../../libs/service.host"
@@ -31,6 +32,8 @@ export default function EditForm({ doc, typeDoc }: Props) {
   const navigate = useNavigate()
 
   const [fileList, setFileList] = useState<FileList[]>([])
+  const theme = (useSelector((state) => state) as { theme: { theme: string } }).theme.theme;
+  console.log(theme)
 
   return <form className={styles.root}
     onSubmit={event => _onSubmit(
@@ -65,7 +68,7 @@ export default function EditForm({ doc, typeDoc }: Props) {
       <FileInput errorMessage={errorMessage}
         setFileList={(file: FileList) => setFileList([...fileList, file])} />
 
-      <Calendar/>
+      <Calendar stylesCalendar={theme}/>
 
       <Signatory
         typeDoc={typeDoc}

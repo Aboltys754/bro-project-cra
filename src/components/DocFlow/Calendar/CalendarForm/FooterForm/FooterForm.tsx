@@ -5,7 +5,8 @@ import classNames from "classnames"
 type TypeCalendarForm = {  
     date: number  
     setDate: React.Dispatch<React.SetStateAction<number>>,
-    month: number,    
+    month: number,
+    setMonth: React.Dispatch<React.SetStateAction<number>>,
     year: number,
     hiddenCalendar: boolean
     setHiddenCalendar: React.Dispatch<React.SetStateAction<boolean>>
@@ -16,7 +17,7 @@ type TypeObjectDate = {
     style: boolean
 }
 
-export default function FooterForm({date, setDate, month, year, hiddenCalendar, setHiddenCalendar}: TypeCalendarForm) {
+export default function FooterForm({date, setDate, month, setMonth, year, hiddenCalendar, setHiddenCalendar}: TypeCalendarForm) {
     // дней в предыдущем месяце
     const lastData = new Date(year, month, 0).getDate()
     // дней в нынешнем месяце
@@ -76,9 +77,8 @@ export default function FooterForm({date, setDate, month, year, hiddenCalendar, 
             {arraydate.map((value, index) => (
                 <div 
                     key={index} 
-                    // className={value.style ? styles.dateNew : styles.date}
                     className={classNames(styles.date, value.style ? getTodayDate(value.value, date, month, year, newDate) ? styles.dateNew : styles.month : "", )}
-                    onClick={(e) => _clickDate(e, setDate, hiddenCalendar, setHiddenCalendar)}>
+                    onClick={(e) => _clickDate(e, setDate, month, setMonth, hiddenCalendar, setHiddenCalendar)}>
                         {value.value}
                 </div>
             ))}
@@ -88,8 +88,20 @@ export default function FooterForm({date, setDate, month, year, hiddenCalendar, 
 // Выбрать число по клику и записать в основное окно
 function _clickDate(e: React.MouseEvent<HTMLDivElement, MouseEvent>,
                     setDate: React.Dispatch<React.SetStateAction<number>>,
+                    month: number,
+                    setMonth: React.Dispatch<React.SetStateAction<number>>,
                     hiddenCalendar: boolean,
                     setHiddenCalendar: React.Dispatch<React.SetStateAction<boolean>>) {
+    // console.log(e.currentTarget.getAttribute('class'))
+    const classStr = e.currentTarget.getAttribute('class')
+    if (!classStr?.includes('month') && !classStr?.includes('dateNew')) {
+        if (Number(e.currentTarget.textContent) > 20) {
+            setMonth(month - 1)
+        }
+        else if (Number(e.currentTarget.textContent) < 8) {
+            setMonth(month + 1)
+        }
+    }
 
     if (e.currentTarget.textContent !== null) {
         setDate(Number(e.currentTarget.textContent));

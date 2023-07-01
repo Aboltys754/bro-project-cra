@@ -10,4 +10,5 @@
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+    color: var(--color);
 }

@@ -17,12 +17,12 @@ export default function HeaderForm({month, setMonth, year, setYear, showSelectFo
 
     return (
         <div className={styles.root}>
-            <LeftArrow height="15px" width="15px" className={styles.arrow} onClick={() => previousMonth(month, setMonth)}/>
+            <LeftArrow height="25px" width="25px" className={styles.arrow} onClick={() => previousMonth(month, setMonth)}/>
             <div className={styles.form} onClick={() => setShowSelectForm(!showSelectForm)}>
                 <MonthComponent month={month} setMonth={setMonth} year={year} setYear={setYear} typeEvent={"form"}/>
                 <YearComponent year={year}/>
             </div>
-            <RightArrow height="15px" width="15px" className={styles.arrow} onClick={() => nextMonth(month, setMonth)}/>
+            <RightArrow height="25px" width="25px" className={styles.arrow} onClick={() => nextMonth(month, setMonth)}/>
         </div>
     )
 }
