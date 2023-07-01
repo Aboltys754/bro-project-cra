@@ -20,9 +20,9 @@ export default function SelectYear({year, setYear, showMonthForm, setShowMonthFo
     return (
         <div className={styles.root}>            
             <div className={styles.hederMenu}>
-                <LeftArrow height="15px" width="15px" className={styles.arrow} onClick={() => setYear(year - 10)}/>
+                <LeftArrow height="25px" width="25px" className={styles.arrow} onClick={() => setYear(year - 10)}/>
                 <p>{`${startingYear} - ${startingYear + 9}`}</p>
-                <RightArrow height="15px" width="15px" className={styles.arrow} onClick={() => setYear(year + 10)}/>
+                <RightArrow height="25px" width="25px" className={styles.arrow} onClick={() => setYear(year + 10)}/>
             </div>
             <div className={styles.years}>
                 {listYear.map((value, index) => <div 

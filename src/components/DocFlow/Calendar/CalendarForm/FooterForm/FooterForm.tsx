@@ -1,4 +1,3 @@
-import { useState }from "react"
 import styles from "./styles.module.css"
 import classNames from "classnames"
 
@@ -95,6 +94,7 @@ function _clickDate(e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     // console.log(e.currentTarget.getAttribute('class'))
     const classStr = e.currentTarget.getAttribute('class')
     if (!classStr?.includes('month') && !classStr?.includes('dateNew')) {
+        // проверка что выбрали число из следующего месяца или предыдущего
         if (Number(e.currentTarget.textContent) > 20) {
             setMonth(month - 1)
         }

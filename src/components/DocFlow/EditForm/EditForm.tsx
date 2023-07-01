@@ -33,7 +33,6 @@ export default function EditForm({ doc, typeDoc }: Props) {
 
   const [fileList, setFileList] = useState<FileList[]>([])
   const theme = (useSelector((state) => state) as { theme: { theme: string } }).theme.theme;
-  console.log(theme)
 
   return <form className={styles.root}
     onSubmit={event => _onSubmit(
