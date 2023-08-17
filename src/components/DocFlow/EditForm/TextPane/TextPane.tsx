@@ -4,7 +4,7 @@ import { ReactComponent as AddDescIcon } from "./image/file-earmark-font.svg"
 import styles from "./styles.module.css"
 
 type Props = {
-  description: string | undefined
+  description?: string
 }
 
 export default function TextPane({ description }: Props) {

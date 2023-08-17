@@ -16,7 +16,7 @@ type Props = {
 
 export default function FileLinkList({ docId, files }: Props) {
   const [hiddenimageTag, setHiddenImageTag] = useState(true)
-  
+
   if (!files || !files.length) {
     return <></>
   }
@@ -25,12 +25,12 @@ export default function FileLinkList({ docId, files }: Props) {
     {files.length ? <><legend>Прикреплённые файлы:</legend><hr></hr></> : <></>}
 
     <div>
-      <img src="" 
-           alt="foto" 
-           id="imageFileLinkList" 
-           className={styles.image} 
-           hidden={hiddenimageTag} 
-           onClick={() => setHiddenImageTag(true)}
+      <img src=""
+        alt="foto"
+        id="imageFileLinkList"
+        className={styles.image}
+        hidden={hiddenimageTag}
+        onClick={() => setHiddenImageTag(true)}
       />
     </div>
 
@@ -44,12 +44,12 @@ export default function FileLinkList({ docId, files }: Props) {
           {file.originalName}
 
           <span hidden
-            onClick={(event) => {         
-              if(!confirm('Удалить файл?')){
+            onClick={(event) => {
+              if (!confirm('Удалить файл?')) {
                 return;
               }
               event.currentTarget.parentElement?.remove();
-              if (docId) {      
+              if (docId) {
                 _delFile(docId, file.fileName, setHiddenImageTag)
                 setHiddenImageTag(true)
               }
@@ -60,7 +60,7 @@ export default function FileLinkList({ docId, files }: Props) {
   </div>
 }
 
-function _delFile(docId: string, fileName: string, setHiddenImageTag: React.Dispatch<React.SetStateAction<boolean>> ) {
+function _delFile(docId: string, fileName: string, setHiddenImageTag: React.Dispatch<React.SetStateAction<boolean>>) {
   const fd = new FormData()
   fd.append('fileName', fileName);
 
@@ -75,10 +75,9 @@ function _delFile(docId: string, fileName: string, setHiddenImageTag: React.Disp
     .then(async response => {
       if (response.ok) {
         const tagImageId = document.getElementById('imageFileLinkList')
-          if (tagImageId) {
-            setHiddenImageTag(true)
-              }
-        const res = await response.json()        
+        if (tagImageId) {
+          setHiddenImageTag(true)
+        }
         return;
       }
       throw new Error(`response status: ${response.status}`)
@@ -94,8 +93,8 @@ function _showOptionalButton(event: React.MouseEvent<HTMLLIElement, MouseEvent>)
 }
 
 function _showImage(
-  file: IStaticFile, 
-  event: React.MouseEvent<HTMLLIElement, MouseEvent>, 
+  file: IStaticFile,
+  event: React.MouseEvent<HTMLLIElement, MouseEvent>,
   setHiddenImageTag: React.Dispatch<React.SetStateAction<boolean>>) {
   const tagImageId = document.getElementById('imageFileLinkList')
   if (tagImageId && event.target === event.currentTarget) {

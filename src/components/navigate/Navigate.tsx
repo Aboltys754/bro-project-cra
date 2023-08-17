@@ -25,7 +25,7 @@ export default function Navigate() {
       <div>
         <nav className={classNames(styles.root, `navbar navbar-expand-lg navbar-${theme === 'light' ? 'primary' : 'dark'}`)}>
           <div className="container-fluid">
-            <Link className={classNames("navbar-brand")} to="/"><SvgLogo theme={theme} /></Link>
+            <Link className={classNames("navbar-brand")} to="/docflow"><h1>ZDP</h1></Link>
 
             <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation"
               onClick={_toggleMenu}
@@ -34,9 +34,9 @@ export default function Navigate() {
             </button>
             <div className="collapse navbar-collapse" id="navbarColor01">
               <ul className="navbar-nav me-auto">
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link to="/" className="nav-link active">Home</Link>
-                </li>
+                </li> */}
 
                 {session.getMe() ?
                   <li className="nav-item">
@@ -44,19 +44,15 @@ export default function Navigate() {
                   </li>
                   : <></>}
 
-                {session.getMe() ?
-                  <li className="nav-item">
-                    <Link to="/catalog" className="nav-link">Каталог</Link>
-                  </li>
-                  : <></>}
+                {/* <li className="nav-item">
+                  <Link to="/catalog" className="nav-link">Каталог</Link>
+                </li> */}
 
-                {session.getMe() ?
-                  <li className="nav-item">
-                    <Link to="/catalog/download/price" className="nav-link">Скачать прайс</Link>
-                  </li>
-                  : <></>}
+                {/* <li className="nav-item">
+                  <Link to="/catalog/download/price" className="nav-link">Прайс-лист</Link>
+                </li> */}
 
-                {session.getMe()?.rank === 'admin' ?
+                {/* {session.getMe()?.rank === 'admin' ?
                   <li className="nav-item dropdown">
                     <span className="nav-link dropdown-toggle" onClick={(event) => event.currentTarget.nextElementSibling?.classList.toggle("show")}>Прайс</span>
                     <div className="dropdown-menu" onClick={(event) => event.currentTarget.classList.toggle("show")}>
@@ -66,15 +62,22 @@ export default function Navigate() {
                       <Link to="/catalog/edit/upload" className="dropdown-item">Загрузка прайса</Link>
                     </div>
                   </li>
-                  : <></>}
+                  : <></>} */}
 
-                <li className="nav-item">
-                  <Link to="/newsLine" className="nav-link">Слайды</Link>
+                {/* {session.getMe()?.rank === 'admin' ?
+                  <li className="nav-item">
+                    <Link to="/newsLine" className="nav-link">Слайды</Link>
+                  </li>
+                  : <></>
+                } */}
+
+                {/* <li className="nav-item">
+                  <Link to="/about/contact" className="nav-link">Контакты</Link>
                 </li>
 
                 <li className="nav-item">
-                  <Link to="/about" className="nav-link">О компании</Link>
-                </li>
+                  <Link to="/about/company" className="nav-link">О компании</Link>
+                </li> */}
 
 
                 {session.getMe() ? <li className="nav-item">
@@ -99,17 +102,6 @@ export default function Navigate() {
                   : <></>
                 }
 
-                <li className="nav-item">
-                  <Link to="/userPage" className="nav-link">test</Link>
-                </li>
-
-                {/* <li className="nav-item">
-
-            <Link to="/auth" className="nav-link">Sign in</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/auth/signout" className="nav-link">Sign out</Link>
-          </li> */}
               </ul>
             </div>
           </div>

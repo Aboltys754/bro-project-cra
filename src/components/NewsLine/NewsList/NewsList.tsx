@@ -18,7 +18,7 @@ const stateFunction = null
 
 
 export default function NewsList() {
-  session.subscribe('SlidesList');  
+  session.subscribe('NewsList');  
   // Получение всех новостей с сервера
   const [docs, setDocs] = useState(useLoaderData() as INews[])
   // отображает кнопку загрузить еще

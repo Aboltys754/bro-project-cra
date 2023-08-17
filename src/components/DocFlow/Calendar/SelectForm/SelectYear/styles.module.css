@@ -5,8 +5,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    border: 3px var(--color) solid;    
-    border-radius: 10px;
+    border: 1px var(--color) solid; 
     width: 190px;
     padding: 5px;
 }
@@ -29,12 +28,11 @@
 .arrow {
     margin: 0;
     padding: 3px;
-    border: 3px var(--background-color) solid;
-    border-radius: 5px;
+    border: 1px var(--background-color) solid;
 }
 
 .arrow:hover {
-    border: 3px var(--color) solid;
+    border: 1px var(--color) solid;
 }
 
 .years {
@@ -53,8 +51,7 @@
     margin: 1px;
     padding: 5px;
     width: 50px;
-    border: 3px var(--color) solid;
-    border-radius: 10px;
+    border: 1px var(--color) solid;
     color: var(--color);
     cursor: pointer;
     -moz-user-select: -moz-none;

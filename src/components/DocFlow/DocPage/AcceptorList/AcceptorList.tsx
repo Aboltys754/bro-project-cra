@@ -1,7 +1,6 @@
 import styles from "./styles.module.css"
 
 export default function AcceptorList({ acceptor }: IDoc) {
-  console.log(acceptor)
   return <div className={styles.root}>
     {acceptor.map(e => {
       return <div key={e.uid} className="mt-2">

@@ -39,11 +39,13 @@ async function _downloadPrice(
     fetch(`${serviceHost("bridge")}/api/bridge/file/download`)
         .then(async response => {
             if (response.ok) {
-                const res = await response.blob()
-                const file = new Blob([res], { type: 'application/vnd.ms-excel' });
+                const contentType = response.headers.get('content-type') || undefined;
+
+                const res = await response.blob();
+                const file = new Blob([res], { type: contentType });
                 const a = document.createElement("a");
                 a.href = URL.createObjectURL(file);
-                a.download = _makePriceName();
+                a.download = _makePriceName(contentType);
                 a.click();
                 setDownloadState('complete');
                 return;
@@ -56,11 +58,20 @@ async function _downloadPrice(
         })
 }
 
-function _makePriceName() {
+function _makePriceName(contentType?: string) {
     const date = new Date();
     let month: number | string = (date.getMonth() + 1);
     if (month < 10) {
         month = '0' + month;
     }
-    return `Прайс от ${date.getFullYear()}-${month}-${date.getDate()}.xlsx`
+
+    const fname = `Прайс от ${date.getFullYear()}-${month}-${date.getDate()}`;
+    switch (contentType) {
+        case 'application/vnd.ms-excel':
+            return `${fname}.xls`
+        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            return `${fname}.xlsx`
+        default:
+            throw new Error('bad content-type');
+    }
 }

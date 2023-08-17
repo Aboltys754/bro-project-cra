@@ -9,19 +9,20 @@ type Props = {
   setAbout: React.Dispatch<React.SetStateAction<IAbout | undefined>>
   editMode: boolean
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>
+  alias: string
 }
 
-export default function EditForm({ about, setAbout, editMode, setEditMode }: Props) {
+export default function EditForm({ about, setAbout, editMode, setEditMode, alias }: Props) {
   return <form
     onSubmit={(event) => { _onSubmit(event, setEditMode, about, setAbout) }}>
-
-    <EditButton editMode={editMode} />
 
     <div className="form-group">
       <label className="form-label mt-4">Редактировать  страницу (markdown)</label>
       <textarea className="form-control" name="mdInfo" defaultValue={about?.mdInfo || ""}></textarea>
-      <input type="hidden" name="alias" defaultValue="company" />
+      <input type="hidden" name="alias" defaultValue={alias} />
     </div>
+
+    <EditButton editMode={editMode} />
   </form>
 }
 

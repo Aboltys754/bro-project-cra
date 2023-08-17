@@ -2,14 +2,16 @@
  * представление документов в виде плитки
  */
 import DocBar from "./DocBar/DocBar";
-import session from "../../../libs/token.manager"
-import styles from "./styles.module.css";
+import session from "../../../libs/token.manager";
+import finder from "../../../libs/deep.finder";
 import { ReactComponent as IconFoo } from "./icons/foo.svg";
 import { ReactComponent as IconFilter } from "./icons/filter-square.svg";
 import { ReactComponent as IconFire } from "./icons/fire.svg";
 import { ReactComponent as IconFolder } from "./icons/folder.svg";
-import finder from "../../../libs/deep.finder";
 import AddDocButton from "./AddDocButton/AddDocButton";
+import DepAddInvoice from "./DepAddInvoice/DepAddInvoice";
+import DepInvocesForDirector from "./DepInvocesForDirector/DepInvocesForDirector";
+import styles from "./styles.module.css";
 
 export default function DocBarPanel() {
   session.subscribe('DocBarPanel');
@@ -22,6 +24,9 @@ export default function DocBarPanel() {
     }
 
     <div className={styles.root}>
+
+      <DepInvocesForDirector />
+
       <DocBar
         title="На утверждение"
         Icon={IconFire}
@@ -45,6 +50,8 @@ export default function DocBarPanel() {
         Icon={IconFolder}
         queryString="?limit=50"
       />
+
+      <DepAddInvoice />
     </div>
   </div>
 }

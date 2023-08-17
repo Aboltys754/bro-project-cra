@@ -26,6 +26,11 @@
     align-items: center;
     width: 170px;
     cursor: pointer;
+    opacity: 0.8;
+}
+
+.icon:hover {
+    opacity: 1;
 }
 
 .date {

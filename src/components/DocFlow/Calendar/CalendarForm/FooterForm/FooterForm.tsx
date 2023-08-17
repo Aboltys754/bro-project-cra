@@ -1,3 +1,5 @@
+
+import { useRef } from "react"
 import styles from "./styles.module.css"
 import classNames from "classnames"
 
@@ -25,7 +27,7 @@ export default function FooterForm({date, setDate, month, setMonth, year, hidden
     const newDay = new Date(year, month, 0).getDay()
     const arraydate = [] as TypeObjectDate[]
 
-    const newDate = new Date();
+    const newDate = useRef([date, month, year]).current;
 
     
     // Заполняем массив днями из предыдущего месяца если нынешней начинается не с понедельника
@@ -76,7 +78,7 @@ export default function FooterForm({date, setDate, month, setMonth, year, hidden
             {arraydate.map((value, index) => (
                 <div 
                     key={index} 
-                    className={classNames(styles.date, value.style ? getTodayDate(value.value, date, month, year, newDate) ? styles.dateNew : styles.month : "", )}
+                    className={classNames(styles.date, value.style ? getTodayDate(value.value, date, month, year, newDate) ? styles.dateNew : styles.month : "" )}
                     onClick={(e) => _clickDate(e, setDate, month, setMonth, hiddenCalendar, setHiddenCalendar)}>
                         {value.value}
                 </div>
@@ -108,9 +110,9 @@ function _clickDate(e: React.MouseEvent<HTMLDivElement, MouseEvent>,
         setHiddenCalendar(!hiddenCalendar);
     }
 }
-// Выделить сегодняшнюю дату
-function getTodayDate(value: number, date: number, month: number, year: number, newDate: Date) {
-    if (newDate.getDate() === value && newDate.getMonth() === month && newDate.getFullYear() === year) {
+// Выделяет ранее выбранную дату или сегодняшнюю дату
+function getTodayDate(value: number, date: number, month: number, year: number, newDate: number[]) {
+    if (newDate[0] === value && newDate[1] === month && newDate[2] === year) {
         return true
     }
     return false

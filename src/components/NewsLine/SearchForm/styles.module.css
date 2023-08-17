@@ -5,7 +5,7 @@
 .root fieldset {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
 }
 

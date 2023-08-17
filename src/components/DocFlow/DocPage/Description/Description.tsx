@@ -10,12 +10,16 @@ type Props = {
 }
 
 export default function Description({ description, id, limit }: Props) {
+  if (!description) {
+    return <></>
+  }
+
   return <>
-    <div className="mt-4"
-      dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(_cut(description, limit)) }}
-    ></div>
-    {(limit && description.length > 350) ? <Link to={`/docflow/${id}`} className="nav-link">Читать полностью</Link> : <></>}
-  </>
+      <div className="mt-4"
+        dangerouslySetInnerHTML={{ __html: converter.markdownToHTML(_cut(description, limit)) }}
+      ></div>
+      {(limit && description.length > 350) ? <Link to={`/docflow/${id}`} className="nav-link">Читать полностью</Link> : <></>}
+    </>
 }
 
 function _cut(text: string, limit?: number) {

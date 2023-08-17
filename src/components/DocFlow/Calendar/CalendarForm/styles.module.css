@@ -1,6 +1,25 @@
 .root {
-    border: 3px var(--color) solid;
-    border-radius: 10px;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 1px var(--color) solid;
+    padding: 0 10px 10px 10px;
     width: 250px;
+}
+
+.divIcon {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.icon {
+    width: 10px;
+    height: 10px;
+    margin: 10px 0 0 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.icon:hover {
+    opacity: 1;
 }

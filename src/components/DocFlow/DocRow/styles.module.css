@@ -24,3 +24,7 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.root button {
+  margin-right: 10px;
+}

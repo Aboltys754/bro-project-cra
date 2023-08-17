@@ -3,20 +3,20 @@ import { redirect, LoaderFunctionArgs } from "react-router-dom";
 import serviceHost from "../libs/service.host"
 import fetchWrapper from "../libs/fetch.wrapper"
 import tokenManager from "../libs/token.manager"
+import { responseNotIsArray } from "../middleware/response.validator";
 import session from "../libs/token.manager";
 
-import { responseNotIsArray } from "../middleware/response.validator";
 import DocFlow from "../components/DocFlow/DocFlow"
 import DocList from "../components/DocFlow/DocList/DocList"
-import DocPage from "../components/DocFlow/DocPage/DocPage";
+import DocPage from "../components/DocFlow/DocPage/Wrapper";
 import DocBarPanel from "../components/DocFlow/DocBarPanel/DocBarPanel";
-import DocCreatePage from "../components/DocFlow/DocCreatePage/DocCreatePage";
-import DocEditPage from "../components/DocFlow/DocEditPage/DocEditPage";
+import CreateDoc from "../components/DocFlow/DocCreatePage/CreateDoc";
+import EditDoc from "../components/DocFlow/DocEditPage/EditDoc";
 
 export default {
   path: "/docflow",
   element: <DocFlow />,
-  children: [  
+  children: [
     {
       index: true,
       element: <DocBarPanel />,
@@ -44,12 +44,17 @@ export default {
     },
     {
       path: "/docflow/create/doc",
-      element: <DocCreatePage />,
+      element: <CreateDoc />,
+      loader: () => session.start(),
+    },
+    {
+      path: "/docflow/create/invoice",
+      element: <CreateDoc tpl="invoice" />,
       loader: () => session.start(),
     },
     {
       path: "/docflow/edit/doc/:id",
-      element: <DocEditPage />,
+      element: <EditDoc />,
       loader: ({ params }: LoaderFunctionArgs) => fetchWrapper(() => _getDoc(params.id))
         .then(responseNotIsArray)
         .then(res => {
@@ -59,7 +64,7 @@ export default {
           return res;
         })
         .catch(() => redirect('/auth'))
-    }
+    },
   ]
 }
 

@@ -13,6 +13,7 @@ type PopupMode = "success" | "danger" | undefined
 type AuthFormMode = "signin" | "signup" | "forgot"
 type SignatoryMode = "acceptor" | "recipient"
 type ActionMode = "Создать" | "Редактировать" | "Удалить" | "Согласовать" | "Ознакомиться"
+type DocTemplateName = "invoice"
 /*
 * тип, устанавливающий возможные значения режима информационного сообщения (подтверждение email, сброс пароля)
 */
@@ -90,6 +91,8 @@ interface IProduct {
   length: string
   manufacturer: string
   stock: string
+  photo: string
+  alias: string
   // storage: unknown
 }
 
@@ -105,6 +108,9 @@ interface IDoc {
   createdAt: string
   acceptor: IDocSignatory[]
   recipient: IDocSignatory[]
+
+  deadLine?: string
+  sum?: number
 }
 
 interface IDocUnit {
@@ -161,8 +167,9 @@ interface IUser {
   email: string
   rank: string
   roles: IRole[]
-  name?: string
-  photo?: string
+  name: string
+  photo: string
+  createdAt: string
   status?: string
 }
 
@@ -175,7 +182,7 @@ type DocType = {
 
 interface INews {
   createdAt: string
-  files: IStaticFile[] | []
+  files: IStaticFile[]
   id: string
   isPublic: boolean
   message: string

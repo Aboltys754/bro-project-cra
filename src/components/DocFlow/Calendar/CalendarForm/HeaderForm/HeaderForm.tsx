@@ -14,23 +14,33 @@ type TypeHeaderForm = {
 }
 
 export default function HeaderForm({month, setMonth, year, setYear, showSelectForm, setShowSelectForm}: TypeHeaderForm ) {
-
     return (
         <div className={styles.root}>
-            <LeftArrow height="25px" width="25px" className={styles.arrow} onClick={() => previousMonth(month, setMonth)}/>
+            <LeftArrow height="25px" width="25px" className={styles.arrow} onClick={() => previousMonth(month, setMonth, year, setYear)}/>
             <div className={styles.form} onClick={() => setShowSelectForm(!showSelectForm)}>
                 <MonthComponent month={month} setMonth={setMonth} year={year} setYear={setYear} typeEvent={"form"}/>
                 <YearComponent year={year}/>
             </div>
-            <RightArrow height="25px" width="25px" className={styles.arrow} onClick={() => nextMonth(month, setMonth)}/>
+            <RightArrow height="25px" width="25px" className={styles.arrow} onClick={() => nextMonth(month, setMonth, year, setYear)}/>
         </div>
     )
 }
 
-function previousMonth(month: number, setMonth: React.Dispatch<React.SetStateAction<number>>) {
-    setMonth(month - 1);
+function previousMonth(month: number, setMonth: React.Dispatch<React.SetStateAction<number>>, year: number, setYear: React.Dispatch<React.SetStateAction<number>>) {
+    if (month < 1) {
+        setMonth(11);
+        setYear(year - 1)
+    } else {
+        setMonth(month - 1);
+    }    
 }
 
-function nextMonth(month: number, setMonth: React.Dispatch<React.SetStateAction<number>>) {
-    setMonth(month + 1);
+function nextMonth(month: number, setMonth: React.Dispatch<React.SetStateAction<number>>, year: number, setYear: React.Dispatch<React.SetStateAction<number>>) {
+    if (month > 10) {
+        setMonth(0);
+        setYear(year + 1);
+    } else {
+        setMonth(month + 1);
+    } 
+    
 }

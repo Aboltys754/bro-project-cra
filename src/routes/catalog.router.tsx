@@ -19,7 +19,24 @@ export default {
     {
       index: true,
       element: <Search />,
-      loader: () => session.start(),
+      loader: ({ request }: LoaderFunctionArgs) => new Promise<URL>(res => res(new URL(request.url)))
+        .then(url => {
+          if(url.searchParams.get('query')) {
+            return url;
+          }
+          throw new Error()
+        })
+        .then(url => fetch(`${serviceHost("bridge")}/api/bridge/search/?query=${url.searchParams.get('query')}`))
+        .then(async response => {
+          if (response.ok) {
+            const res = await response.json();
+            return res;
+          }
+          throw new Error(`response status: ${response.status}`)
+        })
+        // .catch(() => redirect('/auth'))
+        .catch(() => null)
+        .finally(() => session.start())
     },
     {
       path: "/catalog/:id",
@@ -33,6 +50,21 @@ export default {
           return res;
         })
         .catch(() => redirect('/auth'))
+        .finally(() => session.start())
+    },
+    {
+      path: "/catalog/product/:alias",
+      element: <><></><ProductPage /></>,
+      loader: ({ params }: LoaderFunctionArgs) => fetchWrapper(() => _getDocByAlias(params.alias))
+        .then(responseNotIsArray)
+        .then(res => {
+          if (res.status === 404) {
+            return redirect('/catalog')
+          }
+          return res;
+        })
+        .catch(() => redirect('/auth'))
+        .finally(() => session.start())
     },
     {
       path: "/catalog/edit/brands",
@@ -81,6 +113,14 @@ function _getProviders() {
 
 function _getDoc(id?: string) {
   return fetch(`${serviceHost("bridge")}/api/bridge/card/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${tokenManager.getAccess()}`
+    }
+  })
+}
+
+function _getDocByAlias(alias?: string) {
+  return fetch(`${serviceHost("bridge")}/api/bridge/card/product/${alias}`, {
     headers: {
       'Authorization': `Bearer ${tokenManager.getAccess()}`
     }

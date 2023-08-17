@@ -53,5 +53,5 @@ function _changePhoto(
 }
 
 function _fileSelection(event: React.MouseEvent<HTMLImageElement, MouseEvent>) {
-  (event.currentTarget.nextElementSibling as HTMLInputElement).click()
+  (event.currentTarget.nextElementSibling as HTMLInputElement)?.click()
 }

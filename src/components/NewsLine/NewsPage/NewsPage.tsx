@@ -1,6 +1,4 @@
 import { useNavigate, useLoaderData } from "react-router-dom";
-import { useState } from "react";
-
 import session from "../../../libs/token.manager"
 import tokenManager from "../../../libs/token.manager"
 import serviceHost from "../../../libs/service.host"
@@ -22,7 +20,7 @@ const converter = new Converter()
 export default function DocPage() {
   session.subscribe('NewsPage');
   const navigate = useNavigate();
-  const [news, setNews] = useState(useLoaderData() as INews);
+  const news = useLoaderData() as INews;
 
   return  (
     <div className={styles.root}>

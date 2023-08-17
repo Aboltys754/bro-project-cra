@@ -16,6 +16,8 @@ export default function SearchForm({setHiddenNextSearch, setSearchResult, offset
   const [disabled, setDisabled] = useState(false)
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
 
+  const defaultValue = new URL(location.href).searchParams.get('query') || "";
+
   return <form id="searchForm" className={styles.root}
     onSubmit={(event) => {
       setHiddenNextSearch(false)
@@ -23,7 +25,7 @@ export default function SearchForm({setHiddenNextSearch, setSearchResult, offset
     }}>
     
     <fieldset disabled={disabled}>
-      <input type="search" name="query" className="form-control" placeholder="Поиск позиций" />
+      <input type="search" name="query" className="form-control" placeholder="Каталожный номер или артикул позиции..." defaultValue={defaultValue}/>
 
       <input type="submit" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'}`)} value="Поиск" />
     </fieldset>

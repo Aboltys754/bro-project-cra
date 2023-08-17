@@ -1,6 +1,7 @@
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import fetcher from "../fetcher"
 import classNames from "classnames";
-import { useSelector } from "react-redux";
 
 type Props = {
   hiddenNextSearch: boolean
@@ -10,16 +11,20 @@ type Props = {
 }
 
 export default function NextSearch({ hiddenNextSearch, setHiddenNextSearch, setSearchResult, searchResult }: Props) {
-  const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
+  const theme = (useSelector((state) => state) as { theme: { theme: string } }).theme.theme;
+  const [disabled, setDisabled] = useState(false);
+
   return searchResult?.positions.length ?
-      <button
-          hidden={hiddenNextSearch}
-          onClick={() => onSubmit(setHiddenNextSearch, searchResult, setSearchResult, searchResult.offset, searchResult.limit)}
-          type="button" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'} mt-4`)}>Загрузить ещё</button>
-      : <></>
+    <button
+      disabled={disabled}
+      hidden={hiddenNextSearch}
+      onClick={() => onSubmit(setDisabled, setHiddenNextSearch, searchResult, setSearchResult, searchResult.offset, searchResult.limit)}
+      type="button" className={classNames(`btn btn-outline-${theme === 'light' ? 'primary' : 'light'} mt-4`)}>Загрузить ещё</button>
+    : <></>
 }
 
 async function onSubmit(
+  setDisabled: React.Dispatch<React.SetStateAction<boolean>>,
   setHiddenNextSearch: React.Dispatch<React.SetStateAction<boolean>>,
   searchResult: ISearchResult | undefined,
   setSearchResult: React.Dispatch<React.SetStateAction<ISearchResult | undefined>>,
@@ -28,10 +33,9 @@ async function onSubmit(
 
   const query = sessionStorage.getItem('lastQuery') || "";
   const lastId = searchResult?.positions[searchResult?.positions.length - 1].id;
-
-  setHiddenNextSearch(true)
+  setDisabled(true)
   const result = await fetcher(query, offset + limit, limit, lastId)
-    .finally(() => setHiddenNextSearch(false));
+    .finally(() => setDisabled(false));
 
   if (!result) {
     setHiddenNextSearch(true)

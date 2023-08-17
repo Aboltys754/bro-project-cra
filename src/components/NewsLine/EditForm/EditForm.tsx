@@ -23,12 +23,12 @@ type fileListProps = {
 
 
 export default function EditForm() {
-  session.subscribe('NewsLine-EditList');
+  session.subscribe('NewsLineEditList');
   const [errorMessage, setErrorResponse] = useState<IErrorMessage>();
   // создается пустой список для добавления файлов
   const [fileList, setFileList] = useState<fileListProps[]>([])
   // передается из Link по нажатию кнопки редактировать конкретный документ
-  const [news, setNews] = useState(useLoaderData() as INews);
+  const news = useLoaderData() as INews;
   const theme = (useSelector((state) =>  state) as {theme: {theme: string}}).theme.theme
   const navigate = useNavigate();
 
@@ -79,7 +79,7 @@ function _onSubmit(
   fileList.map(f => fd.append('images', f.fileList[0]))
 
   // если пользователь пришел не по нажатию кнопки редактировать, тогда stateNews будет undefined 
-  fetchWrapper(() => fetch(`${serviceHost('mnote')}${stateNews ? `/api/mnote/${stateNews?.id}` : `/api/mnote`}`, {
+  fetchWrapper(() => fetch(`${serviceHost('mnote')}/api/mnote/${stateNews?.id || ""}`, {
       method: `${stateNews ? 'PATCH' : 'POST'}`,
       headers: {
         'Authorization': `Bearer ${tokenManager.getAccess()}`

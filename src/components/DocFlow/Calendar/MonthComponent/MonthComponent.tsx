@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import styles from "./styles.module.css";
 
 const listMonth = [
@@ -55,15 +53,6 @@ export default function MonthComponent(
           return <div className={styles.root}>{`${month + 1}`}</div>
       }
     } else {
-      if (month < 0) {
-        setMonth(11);
-        setYear(year - 1);
-        return <>{listMonth[month]}</>
-      } else if (month > 11) {
-        setMonth(0);
-        setYear(year + 1);
-        return <>{listMonth[month]}</>
-      }
       return <>{listMonth[month]}</>
     }
 

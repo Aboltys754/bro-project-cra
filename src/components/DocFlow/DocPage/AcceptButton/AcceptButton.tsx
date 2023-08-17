@@ -12,19 +12,25 @@ type Props  = {
   recipient: IDocSignatory[]
   signatoryMode: SignatoryMode
   setDoc: React.Dispatch<React.SetStateAction<IDoc>>
+  directing: ISimpleRow
+  task: ISimpleRow
 }
 
-export default function AcceptButton({ id, acceptor, recipient, signatoryMode, setDoc }: Props) {
+export default function AcceptButton({ id, acceptor, recipient, signatoryMode, setDoc, directing, task }: Props) {
   const [disabled, setDisabled] = useState(false)
   const list = signatoryMode === 'acceptor' ? acceptor : recipient;
 
-  // обязательна проверка на  false, т.к. если пользователя нет в списке подписантов find вернёт undefined
-  if ((list.find(e => e.uid === session.getMe()?.uid))?.accept === false) {
-    return <button 
-      type="button" 
-      disabled={disabled}
-      className={classNames("btn", signatoryMode === 'acceptor' ? "btn-success": "btn-info") }
-      onClick={() => accepting(id, signatoryMode, setDoc, setDisabled)}>{signatoryMode === 'acceptor' ? "Подписать" : "Ознакомиться"}</button>
+  const action = signatoryMode === 'acceptor' ? 'Согласовать' : 'Ознакомиться';
+  if(_actionFinder(session.getMe()?.roles[0], directing.id, task.id, action)){
+    
+    // обязательна проверка на  false, т.к. если пользователя нет в списке подписантов то find вернёт undefined... прикольно звучит: find вернёт undefined
+    if ((list.find(e => e.uid === session.getMe()?.uid))?.accept === false) {
+      return <button 
+        type="button" 
+        disabled={disabled}
+        className={classNames("btn", signatoryMode === 'acceptor' ? "btn-success": "btn-info") }
+        onClick={() => accepting(id, signatoryMode, setDoc, setDisabled)}>{signatoryMode === 'acceptor' ? "Подписать" : "Ознакомиться"}</button>
+    }
   }
   return <></>
 }
@@ -54,4 +60,16 @@ function accepting(
     })
     .catch(error => console.log(error.message))
     .finally(() => setDisabled(false));
+}
+
+function _actionFinder(
+  role?: IRole, 
+  idDirecting?: number, 
+  idTask?: number, 
+  action?: ActionMode,
+  ): boolean {
+  return !!role
+    ?.directings.find(e => e.id === idDirecting)
+    ?.tasks.find(e => e.id === idTask)
+    ?.actions.find(e => e.title === action);
 }

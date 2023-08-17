@@ -1,3 +1,10 @@
+.root{
+  display: flex;
+  flex-flow: column wrap;
+}
+.root h4 {
+  color: var(--color);
+}
 .root li:hover{
   color: var(--color) !important;
   cursor: pointer;

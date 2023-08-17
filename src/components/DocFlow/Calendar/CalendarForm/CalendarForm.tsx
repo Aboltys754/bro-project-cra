@@ -3,6 +3,7 @@ import styles from "./styles.module.css"
 import DayComponent from "../DayComponent/DayComponent";
 import FooterForm from "./FooterForm/FooterForm";
 import HeaderForm from "./HeaderForm/HeaderForm";
+import { ReactComponent as No } from "../img/no.svg"
 
 type TypeCalendarForm = {
     hiddenCalendar: boolean,
@@ -19,9 +20,12 @@ type TypeCalendarForm = {
 
 
 export default function CalendarForm({hiddenCalendar, setHiddenCalendar, date, setDate, month, setMonth, year, setYear, showSelectForm, setShowSelectForm}: TypeCalendarForm) {
-
     return (
         <div className={styles.root}>
+            <div className={styles.divIcon} >
+                <No className={styles.icon} onClick={() => setHiddenCalendar(true)}/>
+            </div>
+                       
             <HeaderForm 
                 month={month} 
                 setMonth={setMonth}

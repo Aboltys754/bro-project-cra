@@ -1,10 +1,13 @@
 import { useLoaderData, useLocation } from "react-router-dom";
-import DocRow from "../DocRow/DocRow";
+import session from "../../../libs/token.manager";
+import DocRow from "../DocRow/Wrapper";
 import NextSearch from "../NextSearch/NextSearch";
 import styles from "./styles.module.css";
 import { useState } from "react";
 
 export default function DocList() {
+  session.subscribe('DocList');
+
   const [docs, setDocs] = useState(useLoaderData() as IDoc[])
   const [showNextButton, setShowNextButton] = useState(true)
   const {state, search} = useLocation();
